@@ -11,6 +11,10 @@ interface ICacheService {
 class RedisCache implements ICacheService {
     private client;
     private isConnected: boolean = false;
+    private connectionTimeout: NodeJS.Timeout | null = null;
+    private readonly MAX_RETRY_ATTEMPTS = 10;
+    private readonly INITIAL_RETRY_DELAY = 100; // ms
+    private readonly MAX_RETRY_DELAY = 5000; // ms
 
     constructor() {
         this.initializeRedis();
@@ -18,23 +22,52 @@ class RedisCache implements ICacheService {
 
     private async initializeRedis() {
         try {
+            const connectionString = process.env.REDIS_CONNECTION_STRING;
+            if (!connectionString) {
+                throw new Error('Redis connection string is not configured');
+            }
+
             this.client = createClient({
-                url: process.env.REDIS_CONNECTION_STRING,
+                url: connectionString,
                 socket: {
+                    tls: true,
                     reconnectStrategy: (retries) => {
-                        if (retries > 10) return new Error('Redis max retries reached');
-                        return Math.min(retries * 100, 3000);
-                    }
+                        if (retries > this.MAX_RETRY_ATTEMPTS) {
+                            return new Error('Redis max retries reached');
+                        }
+                        const delay = Math.min(
+                            this.INITIAL_RETRY_DELAY * Math.pow(1.5, retries), 
+                            this.MAX_RETRY_DELAY
+                        );
+                        return delay;
+                    },
+                    connectTimeout: 15000, // 15 seconds
                 }
             });
 
+            // Handle connection events
             this.client.on('error', (err) => {
-                trackException(err, { service: 'RedisCache' });
+                trackException(err, { 
+                    service: 'RedisCache',
+                    event: 'connection-error'
+                });
                 this.isConnected = false;
+                this.scheduleReconnect();
             });
 
             this.client.on('connect', () => {
                 this.isConnected = true;
+                if (this.connectionTimeout) {
+                    clearTimeout(this.connectionTimeout);
+                    this.connectionTimeout = null;
+                }
+            });
+
+            this.client.on('reconnecting', () => {
+                trackException(
+                    new Error('Redis reconnecting'), 
+                    { service: 'RedisCache', event: 'reconnecting' }
+                );
             });
 
             await this.client.connect();
@@ -44,7 +77,24 @@ class RedisCache implements ICacheService {
                 operation: 'initializeRedis'
             });
             this.isConnected = false;
+            this.scheduleReconnect();
         }
+    }
+
+    private scheduleReconnect(): void {
+        if (this.connectionTimeout) {
+            return; // Already scheduled
+        }
+        
+        this.connectionTimeout = setTimeout(() => {
+            this.connectionTimeout = null;
+            this.initializeRedis().catch(err => {
+                trackException(err, { 
+                    service: 'RedisCache',
+                    operation: 'scheduleReconnect'
+                });
+            });
+        }, 5000); // Try to reconnect after 5 seconds
     }
 
     async get(key: string): Promise<any> {
