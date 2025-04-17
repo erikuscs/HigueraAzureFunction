@@ -24,11 +24,27 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          # Removing npm cache to prevent cached dependency issues
+          # cache: 'npm'
+      
+      - name: Clear npm cache
+        run: npm cache clean --force
+      
+      - name: Verify package.json dependencies
+        run: |
+          echo "Verifying package.json dependencies..."
+          if grep -q "fstream.*2.0.0" package.json; then
+            echo "Error: package.json contains reference to non-existent fstream@2.0.0"
+            echo "Fixing fstream dependency to use version 1.0.12..."
+            sed -i 's/"fstream": "\^2.0.0"/"fstream": "\^1.0.12"/g' package.json
+            cat package.json
+          else
+            echo "fstream dependency is correctly configured"
+          fi
       
       - name: Install dependencies
-        run: npm ci
-        
+        run: npm install
+      
       - name: Validate configuration
         run: |
           echo "Validating configuration..."
@@ -54,6 +70,8 @@ jobs:
           api_location: "/" 
           output_location: "out"
           app_build_command: "npm run build"
+          skip_app_build: false
+          skip_api_build: false
         env:
           NODE_VERSION: '20'
           AZURE_FUNCTION_APP_NAME: 'higuera-dev-func'
@@ -61,6 +79,8 @@ jobs:
           CI: true
           NEXT_PUBLIC_AZURE_FUNCTION_URL: 'https://higuera-dev-func.azurewebsites.net'
           NEXT_PUBLIC_SITE_URL: 'https://higueradashboard.live'
+          # Disable npm cache during build
+          npm_config_cache: 'no-cache'
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

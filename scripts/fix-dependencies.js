@@ -18,6 +18,35 @@ console.log('=========================================\n');
 const fs = require('fs');
 const path = require('path');
 
+// Fix dependency issues
+function fixDependencyIssues() {
+  const projectRoot = path.join(__dirname, '..');
+  const packageJsonPath = path.join(projectRoot, 'package.json');
+  
+  try {
+    // Read package.json
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+    let wasModified = false;
+    
+    // Check fstream dependency in overrides
+    if (packageJson.overrides && packageJson.overrides.fstream === '^2.0.0') {
+      console.log('Found invalid fstream version in overrides (^2.0.0). Fixing to ^1.0.12...');
+      packageJson.overrides.fstream = '^1.0.12';
+      wasModified = true;
+    }
+    
+    // Write back if modified
+    if (wasModified) {
+      fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf8');
+      console.log('Fixed dependency issues in package.json');
+    } else {
+      console.log('No dependency issues found in package.json');
+    }
+  } catch (err) {
+    console.error('Error fixing dependencies:', err.message);
+  }
+}
+
 // Fix lodash.isequal usage if it exists
 function fixLodashIsEqual() {
   const projectRoot = path.join(__dirname, '..');
@@ -103,6 +132,9 @@ function checkFstreamUsage() {
 }
 
 try {
+  // Fix package.json dependency issues first
+  fixDependencyIssues();
+  
   const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
   
   // Check for Azure SDK dependencies

@@ -1,0 +1,70 @@
+name: Deploy Next.js to Azure Static Web Apps
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Clear npm cache
+        run: npm cache clean --force
+      
+      - name: Install dependencies with forced resolution
+        run: |
+          # Fix fstream dependency issue directly in package.json if needed
+          if grep -q "fstream.*2.0.0" package.json; then
+            sed -i 's/"fstream": "\^2.0.0"/"fstream": "\^1.0.12"/g' package.json
+          fi
+          npm install --no-fund --no-audit
+
+      - name: Run fix-dependencies script
+        run: node ./scripts/fix-dependencies.js
+
+      - name: Build Next.js application
+        run: npm run build
+        env:
+          NODE_ENV: production
+          AZURE_FUNCTION_APP_NAME: 'higuera-dev-func'
+          NEXT_PUBLIC_AZURE_FUNCTION_URL: 'https://higuera-dev-func.azurewebsites.net'
+          NEXT_PUBLIC_SITE_URL: 'https://higueradashboard.live'
+      
+      - name: Build and Deploy to Azure Static Web Apps
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/"
+          output_location: "out"
+          skip_app_build: true # We've already built the app
+          
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }}
+          action: "close"
