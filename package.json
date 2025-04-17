@@ -14,7 +14,8 @@
     "dev:all": "concurrently \"npm run dev\" \"npm run func:start\"",
     "export": "next export",
     "deploy": "npm run build && npm run export",
-    "postinstall": "node ./scripts/fix-dependencies.js"
+    "postinstall": "node ./scripts/fix-dependencies.js",
+    "fix:deps": "node ./scripts/fix-dependencies.js"
   },
   "keywords": [],
   "author": "",
@@ -66,6 +67,8 @@
   },
   "overrides": {
     "inflight": "^2.0.0",
-    "glob": "^10.4.5"
+    "glob": "^10.4.5",
+    "lodash.isequal": "npm:@types/lodash.isequal@4.5.9",
+    "fstream": "^2.0.0"
   }
 }
