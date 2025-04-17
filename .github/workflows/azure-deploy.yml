@@ -23,11 +23,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install dependencies for function
         run: |
-          npm ci
+          npm install
 
       - name: Build Azure Function
         run: |
@@ -57,11 +57,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install dependencies
         run: |
-          npm ci
+          npm install
 
       - name: Build Next.js app
         run: |
