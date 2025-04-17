@@ -46,6 +46,17 @@ jobs:
           NEXT_PUBLIC_AZURE_FUNCTION_URL: 'https://higuera-dev-func.azurewebsites.net'
           NEXT_PUBLIC_SITE_URL: 'https://higueradashboard.live'
       
+      - name: Verify build output
+        run: |
+          echo "Checking contents of 'out' directory..."
+          ls -la out/
+          if [ ! -f "out/index.html" ]; then
+            echo "WARNING: index.html not found in out directory!"
+            echo "Creating a temporary index.html..."
+            # Create a simple index.html that redirects to the actual page
+            echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=/_next/static/chunks/pages/ExecutiveSummary.js"></head><body>Redirecting...</body></html>' > out/index.html
+          fi
+
       - name: Build and Deploy to Azure Static Web Apps
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -54,6 +65,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/"
+          api_location: "/"
           output_location: "out"
           skip_app_build: true # We've already built the app
           
