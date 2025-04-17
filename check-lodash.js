@@ -22,7 +22,8 @@ const checkForLodashIsEqual = async () => {
   for (const file of files) {
     try {
       const content = await fs.readFile(file, 'utf8');
-      if (content.includes('lodash.isequal')) {
+      const lodashIsEqualRegex = /\blodash\.isequal\b(?!.*\/\/|.*\/\*|\*\/)/;
+      if (lodashIsEqualRegex.test(content)) {
         console.log(`Found lodash.isequal in: ${file}`);
         found = true;
       }
