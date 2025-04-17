@@ -3,7 +3,8 @@
     {
       "route": "/api/*",
       "methods": ["GET", "POST", "PUT", "DELETE"],
-      "allowedRoles": ["anonymous", "authenticated"]
+      "allowedRoles": ["anonymous", "authenticated"],
+      "rewrite": "https://%AZURE_FUNCTION_APP_NAME%.azurewebsites.net/api/{rest}"
     },
     {
       "route": "/_next/static/*",
@@ -33,7 +34,7 @@
     }
   },
   "globalHeaders": {
-    "content-security-policy": "default-src 'self' https://*.azurewebsites.net; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'",
+    "content-security-policy": "default-src 'self' https://*.azurewebsites.net https://higueradashboard.live; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'",
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
     "X-XSS-Protection": "1; mode=block"

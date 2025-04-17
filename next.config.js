@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    AZURE_FUNCTION_URL: process.env.AZURE_FUNCTION_URL || 'http://localhost:7071'
+    AZURE_FUNCTION_URL: process.env.AZURE_FUNCTION_URL || 'http://localhost:7071',
+    CUSTOM_DOMAIN: 'https://higueradashboard.live'
   },
   // Change to export for better Static Web Apps compatibility
   output: 'export',

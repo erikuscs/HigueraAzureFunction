@@ -10,6 +10,9 @@ param location string = resourceGroup().location
 @description('The email recipients for notifications')
 param emailRecipients string
 
+@description('The custom domain for the static web app')
+param customDomain string = 'higueradashboard.live'
+
 var uniqueName = '${projectName}-${environment}'
 var tags = {
   environment: environment
@@ -148,9 +151,16 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
         }
         {
           name: 'CORS_ALLOWED_ORIGINS'
-          value: 'https://${staticWebApp.properties.defaultHostname}'
+          value: 'https://${staticWebApp.properties.defaultHostname},https://${customDomain}'
         }
       ]
+      cors: {
+        allowedOrigins: [
+          'https://${staticWebApp.properties.defaultHostname}'
+          'https://${customDomain}'
+        ]
+        supportCredentials: false
+      }
     }
   }
 }
@@ -176,6 +186,12 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
       appBuildCommand: 'npm run build'
       apiBuildCommand: ''
     }
+    customDomains: [
+      {
+        name: customDomain
+        validationMethod: 'dns-txt-token'
+      }
+    ]
   }
   identity: {
     type: 'SystemAssigned'
@@ -190,6 +206,7 @@ resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-09-01' = {
     AZURE_FUNCTION_URL: 'https://${functionApp.properties.defaultHostName}'
     APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
     KEY_VAULT_URL: keyVault.properties.vaultUri
+    AZURE_FUNCTION_APP_NAME: functionApp.name
   }
 }
 
