@@ -68,7 +68,7 @@
   "overrides": {
     "inflight": "^2.0.0",
     "glob": "^10.4.5",
-    "lodash.isequal": "npm:@types/lodash.isequal@4.5.9",
+    "lodash.isequal": "^4.5.0",
     "fstream": "^2.0.0"
   }
 }
