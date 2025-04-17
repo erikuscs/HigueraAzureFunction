@@ -9,11 +9,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "node ./scripts/process-static-config.js",
     "start": "next start",
     "func:start": "func start",
     "dev:all": "concurrently \"npm run dev\" \"npm run func:start\"",
-    "export": "next export",
-    "deploy": "npm run build && npm run export",
+    "deploy": "npm run build",
     "postinstall": "node ./scripts/fix-dependencies.js",
     "fix:deps": "node ./scripts/fix-dependencies.js"
   },
@@ -69,6 +69,6 @@
     "inflight": "^2.0.0",
     "glob": "^10.4.5",
     "lodash.isequal": "^4.5.0",
-    "fstream": "^2.0.0"
+    "fstream": "^1.0.12"
   }
 }
