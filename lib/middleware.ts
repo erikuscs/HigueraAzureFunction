@@ -1,4 +1,4 @@
-import { SecurityConfig, MonitoringConfig } from './config';
+import { SecurityConfig, MonitoringConfig, defaultSecurityConfig } from './config';
 
 // Server-only modules that will be imported conditionally
 let rateLimit = null;
@@ -19,7 +19,7 @@ if (typeof window === 'undefined') {
 export const rateLimiter = typeof window === 'undefined' && rateLimit ? 
   rateLimit({
     windowMs: 60 * 1000, // 1 minute
-    max: SecurityConfig.maxRequestsPerMinute
+    max: defaultSecurityConfig.maxRequestsPerMinute
   }) : 
   (req, res, next) => {
     if (next) next();
