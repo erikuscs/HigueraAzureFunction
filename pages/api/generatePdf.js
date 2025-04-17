@@ -24,7 +24,7 @@ if (typeof window === 'undefined') {
 
 import { trackException, trackMetric } from '../../lib/monitoringService';
 
-// Utility function for consistent currency formatting
+// Utility function for consistent currency formatting - DO NOT REMOVE OR DUPLICATE
 function formatCurrency(number) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -77,9 +77,9 @@ export default async function handler(req, res) {
       startY: 50,
       head: [['Metric', 'Value']],
       body: [
-        ['Total Budget', `$${dashboardData.kpis.totalBudget.toLocaleString()}`],
-        ['Spent', `$${dashboardData.kpis.spent.toLocaleString()}`],
-        ['Remaining', `$${dashboardData.kpis.remaining.toLocaleString()}`],
+        ['Total Budget', formatCurrency(dashboardData.kpis.totalBudget)],
+        ['Spent', formatCurrency(dashboardData.kpis.spent)],
+        ['Remaining', formatCurrency(dashboardData.kpis.remaining)],
         ['Overrun Risk', dashboardData.kpis.risk]
       ],
       theme: 'grid',
@@ -210,3 +210,4 @@ export default async function handler(req, res) {
     });
   }
 }
+// End of file - No duplicate functions below this point
