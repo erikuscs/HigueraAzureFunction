@@ -24,8 +24,14 @@ if (typeof window === 'undefined') {
 
 import { trackException, trackMetric } from '../../lib/monitoringService';
 
+// Utility function for consistent currency formatting
 function formatCurrency(number) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(number);
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(number);
 }
 
 export default async function handler(req, res) {
@@ -203,13 +209,4 @@ export default async function handler(req, res) {
       timestamp: new Date().toISOString()
     });
   }
-}
-
-function formatCurrency(number) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(number);
 }
