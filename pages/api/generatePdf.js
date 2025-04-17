@@ -1,8 +1,27 @@
-import { Client } from '@microsoft/microsoft-graph-client';
-import { TokenCredentialAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials';
-import { DefaultAzureCredential } from '@azure/identity';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+// Server-only modules that will be imported conditionally
+let MSGraphClient = null;
+let TokenCredentialAuthProvider = null;
+let DefaultAzureCredentialClass = null;
+let jsPDFModule = null;
+
+// Only import server-side modules when running on the server
+if (typeof window === 'undefined') {
+  try {
+    const { Client } = require('@microsoft/microsoft-graph-client');
+    const { TokenCredentialAuthenticationProvider } = require('@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials');
+    const { DefaultAzureCredential } = require('@azure/identity');
+    const jsPDF = require('jspdf');
+    require('jspdf-autotable');
+    
+    MSGraphClient = Client;
+    TokenCredentialAuthProvider = TokenCredentialAuthenticationProvider;
+    DefaultAzureCredentialClass = DefaultAzureCredential;
+    jsPDFModule = jsPDF;
+  } catch (error) {
+    console.error('Error importing server-side modules:', error);
+  }
+}
+
 import { trackException, trackMetric } from '../../lib/monitoringService';
 
 function formatCurrency(number) {
@@ -10,6 +29,12 @@ function formatCurrency(number) {
 }
 
 export default async function handler(req, res) {
+  // This is an API route, which only runs on the server side
+  // But we still need to ensure the imports worked correctly
+  if (!jsPDFModule) {
+    return res.status(500).json({ error: 'Server-side modules not available' });
+  }
+  
   const startTime = performance.now();
   
   try {
@@ -22,7 +47,7 @@ export default async function handler(req, res) {
       throw new Error('No dashboard data provided');
     }
 
-    const doc = new jsPDF();
+    const doc = new jsPDFModule();
     
     // Header
     doc.setFontSize(20);

@@ -1,16 +1,36 @@
-import * as appInsights from 'applicationinsights';
-import { DefaultAzureCredential } from '@azure/identity';
-import { LogAnalyticsClient } from '@azure/monitor-query';
+// Use dynamic imports for server-only modules
+// These modules will only be imported on the server
+
+// Import placeholders for server-side modules
+let appInsightsModule: any = null;
+let DefaultAzureCredentialClass: any = null;
+let LogAnalyticsClientClass: any = null;
+
+// Only import server-side modules when running on the server
+if (typeof window === 'undefined') {
+  try {
+    appInsightsModule = require('applicationinsights');
+    const { DefaultAzureCredential } = require('@azure/identity');
+    const { LogAnalyticsClient } = require('@azure/monitor-query');
+    
+    DefaultAzureCredentialClass = DefaultAzureCredential;
+    LogAnalyticsClientClass = LogAnalyticsClient;
+  } catch (error) {
+    console.error('Error importing server-side modules:', error);
+  }
+}
 
 class MonitoringService {
     private static instance: MonitoringService;
-    private client: appInsights.TelemetryClient;
-    private logAnalyticsClient: LogAnalyticsClient;
+    private client: any;
+    private logAnalyticsClient: any;
     private initialized: boolean = false;
 
     private constructor() {
-        this.initializeAppInsights();
-        this.initializeLogAnalytics();
+        if (typeof window === 'undefined') {
+            this.initializeAppInsights();
+            this.initializeLogAnalytics();
+        }
     }
 
     public static getInstance(): MonitoringService {
@@ -21,8 +41,8 @@ class MonitoringService {
     }
 
     private initializeAppInsights() {
-        if (!this.initialized && process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
-            appInsights.setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
+        if (!this.initialized && process.env.APPLICATIONINSIGHTS_CONNECTION_STRING && appInsightsModule) {
+            appInsightsModule.setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
                 .setAutoDependencyCorrelation(true)
                 .setAutoCollectRequests(true)
                 .setAutoCollectPerformance(true)
@@ -31,23 +51,33 @@ class MonitoringService {
                 .setAutoCollectConsole(true)
                 .setUseDiskRetryCaching(true)
                 .setSendLiveMetrics(true)
-                .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C);
+                .setDistributedTracingMode(appInsightsModule.DistributedTracingModes.AI_AND_W3C);
 
-            appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = "HigueraFunction";
-            appInsights.start();
+            appInsightsModule.defaultClient.context.tags[appInsightsModule.defaultClient.context.keys.cloudRole] = "HigueraFunction";
+            appInsightsModule.start();
             
-            this.client = appInsights.defaultClient;
+            this.client = appInsightsModule.defaultClient;
             this.initialized = true;
         }
     }
 
     private initializeLogAnalytics() {
-        const credential = new DefaultAzureCredential();
-        this.logAnalyticsClient = new LogAnalyticsClient(credential);
+        if (DefaultAzureCredentialClass && LogAnalyticsClientClass) {
+            try {
+                const credential = new DefaultAzureCredentialClass();
+                this.logAnalyticsClient = new LogAnalyticsClientClass(credential);
+            } catch (error) {
+                console.error('Error initializing Log Analytics client:', error);
+            }
+        }
     }
 
     public trackException(error: Error, properties?: { [key: string]: string }) {
-        if (this.initialized) {
+        if (typeof window !== 'undefined' || !this.initialized) {
+            return; // Skip on client-side
+        }
+
+        try {
             const enhancedProperties = {
                 ...properties,
                 errorName: error.name,
@@ -59,11 +89,17 @@ class MonitoringService {
                 exception: error,
                 properties: enhancedProperties
             });
+        } catch (error) {
+            console.error('Error tracking exception:', error);
         }
     }
 
     public trackEvent(name: string, properties?: { [key: string]: string }) {
-        if (this.initialized) {
+        if (typeof window !== 'undefined' || !this.initialized) {
+            return; // Skip on client-side
+        }
+
+        try {
             const enhancedProperties = {
                 ...properties,
                 timestamp: new Date().toISOString(),
@@ -74,11 +110,17 @@ class MonitoringService {
                 name,
                 properties: enhancedProperties
             });
+        } catch (error) {
+            console.error('Error tracking event:', error);
         }
     }
 
     public trackMetric(name: string, value: number, properties?: { [key: string]: string }) {
-        if (this.initialized) {
+        if (typeof window !== 'undefined' || !this.initialized) {
+            return; // Skip on client-side
+        }
+
+        try {
             const enhancedProperties = {
                 ...properties,
                 timestamp: new Date().toISOString(),
@@ -90,11 +132,17 @@ class MonitoringService {
                 value,
                 properties: enhancedProperties
             });
+        } catch (error) {
+            console.error('Error tracking metric:', error);
         }
     }
 
     public trackRequest(name: string, url: string, duration: number, success: boolean, properties?: { [key: string]: string }) {
-        if (this.initialized) {
+        if (typeof window !== 'undefined' || !this.initialized) {
+            return; // Skip on client-side
+        }
+
+        try {
             const enhancedProperties = {
                 ...properties,
                 timestamp: new Date().toISOString(),
@@ -108,11 +156,17 @@ class MonitoringService {
                 success,
                 properties: enhancedProperties
             });
+        } catch (error) {
+            console.error('Error tracking request:', error);
         }
     }
 
     public trackDependency(name: string, data: string, duration: number, success: boolean, properties?: { [key: string]: string }) {
-        if (this.initialized) {
+        if (typeof window !== 'undefined' || !this.initialized) {
+            return; // Skip on client-side
+        }
+
+        try {
             const enhancedProperties = {
                 ...properties,
                 timestamp: new Date().toISOString(),
@@ -127,11 +181,15 @@ class MonitoringService {
                 properties: enhancedProperties,
                 dependencyTypeName: "HTTP"
             });
+        } catch (error) {
+            console.error('Error tracking dependency:', error);
         }
     }
 
     public async queryLogs(query: string, timeRange: { start: Date; end: Date }) {
-        if (!this.logAnalyticsClient) return null;
+        if (typeof window !== 'undefined' || !this.logAnalyticsClient) {
+            return null; // Skip on client-side
+        }
 
         try {
             const workspaceId = process.env.LOG_ANALYTICS_WORKSPACE_ID;
@@ -147,21 +205,35 @@ class MonitoringService {
 
             return result;
         } catch (error) {
-            this.trackException(error as Error, { operation: 'queryLogs' });
+            if (this.initialized) {
+                this.trackException(error as Error, { operation: 'queryLogs' });
+            }
             throw error;
         }
     }
 
-    public startOperation(name: string): appInsights.Contracts.OperationContract {
-        if (this.initialized) {
-            return this.client.startOperation({ name });
+    public startOperation(name: string): any {
+        if (typeof window !== 'undefined' || !this.initialized) {
+            return null; // Skip on client-side
         }
-        return null;
+
+        try {
+            return this.client.startOperation({ name });
+        } catch (error) {
+            console.error('Error starting operation:', error);
+            return null;
+        }
     }
 
-    public stopOperation(operation: appInsights.Contracts.OperationContract) {
-        if (this.initialized && operation) {
+    public stopOperation(operation: any) {
+        if (typeof window !== 'undefined' || !this.initialized || !operation) {
+            return; // Skip on client-side
+        }
+
+        try {
             this.client.stopOperation(operation);
+        } catch (error) {
+            console.error('Error stopping operation:', error);
         }
     }
 }
@@ -190,5 +262,5 @@ export const queryLogs = (query: string, timeRange: { start: Date; end: Date }) 
 export const startOperation = (name: string) => 
     monitoringService.startOperation(name);
 
-export const stopOperation = (operation: appInsights.Contracts.OperationContract) => 
+export const stopOperation = (operation: any) => 
     monitoringService.stopOperation(operation);

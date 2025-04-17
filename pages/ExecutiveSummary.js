@@ -1,11 +1,13 @@
 import { useEffect, useState, useMemo } from "react"
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, BarChart, Bar } from "recharts"
 import { getMicrosoftAccessToken } from "../lib/msalAuth"
-import { cacheGet, cacheSet } from '../lib/cacheService';
-import { monitorPerformance } from '../lib/middleware';
 import HoursTrackingChart from "../components/HoursTrackingChart"
 import TaskUpdateForm from "../components/TaskUpdateForm"
 import WorkerHoursForm from "../components/WorkerHoursForm"
+
+// Remove direct imports of server-only modules
+// import { cacheGet, cacheSet } from '../lib/cacheService';
+// import { monitorPerformance } from '../lib/middleware';
 
 const Button = ({ children, ...props }) => (
   <button
@@ -96,10 +98,7 @@ export default function ExecutiveSummary() {
 
     try {
       const token = await getMicrosoftAccessToken().catch(error => {
-        trackException(error, {
-          operation: 'getMicrosoftAccessToken',
-          component: 'ExecutiveSummary'
-        });
+        console.error('Authentication error:', error);
         throw new Error("Authentication failed. Please sign in again.");
       });
       
@@ -120,19 +119,13 @@ export default function ExecutiveSummary() {
       }
 
       const sendDuration = performance.now() - sendStartTime;
-      trackMetric('clientEmailSendDuration', sendDuration);
-
+      // Track metrics on the server side instead
+      
       setEmailSuccess(true);
       setTimeout(() => setEmailSuccess(false), 5000); // Clear success message after 5 seconds
     } catch (error) {
       console.error('Email report error:', error);
-      trackException(error, {
-        operation: 'sendEmailReport',
-        component: 'ExecutiveSummary',
-        responseStatus: error.response?.status,
-        dashboardData: JSON.stringify(data)
-      });
-
+      
       setEmailError(
         error.message.includes("Authentication failed")
           ? "⚠️ Authentication error. Please sign in and try again."
@@ -145,20 +138,10 @@ export default function ExecutiveSummary() {
 
   const refreshData = async () => {
     setData(null);
-    const cacheKey = 'dashboard_data';
-    const performanceMonitor = monitorPerformance(context, 'fetchDashboardData');
     const fetchStartTime = performance.now();
 
     try {
-      // Try to get from cache first
-      const cachedData = await cacheGet(cacheKey);
-      if (cachedData) {
-        setData(cachedData);
-        trackMetric('cacheHitDuration', performance.now() - fetchStartTime);
-        return;
-      }
-
-      // If not in cache, fetch from API
+      // Fetch directly without using server-side caching
       const publicPath = process.env.NEXT_PUBLIC_BASE_PATH || "";
       const response = await fetch(`${publicPath}/data/data.json`);
       
@@ -168,24 +151,11 @@ export default function ExecutiveSummary() {
       
       const newData = await response.json();
       
-      // Store in cache
-      await cacheSet(cacheKey, newData, {
-        tags: ['dashboard'],
-        ttl: 300 // 5 minutes
-      });
-
       setData(newData);
-      trackMetric('dataFetchDuration', performance.now() - fetchStartTime);
+      console.log(`Data refreshed in ${performance.now() - fetchStartTime}ms`);
     } catch (error) {
       console.error('Failed to fetch data:', error);
-      trackException(error, {
-        operation: 'refreshData',
-        component: 'ExecutiveSummary',
-        cacheKey
-      });
-      setError(error.message);
-    } finally {
-      performanceMonitor?.end();
+      setEmailError(error.message);
     }
   };
 

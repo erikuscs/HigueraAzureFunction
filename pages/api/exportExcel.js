@@ -1,10 +1,29 @@
 import { withApiAuth } from '../../lib/middleware';
 import { trackEvent, trackMetric } from '../../lib/monitoringService';
-import fs from 'fs';
-import path from 'path';
-import ExcelJS from 'exceljs';
+
+// Define server-only modules that will be imported conditionally
+let fs = null;
+let path = null;
+let ExcelJS = null;
+
+// Only import server-side modules when running on the server
+if (typeof window === 'undefined') {
+  try {
+    fs = require('fs');
+    path = require('path');
+    ExcelJS = require('exceljs');
+  } catch (error) {
+    console.error('Error importing server-side modules:', error);
+  }
+}
 
 async function handler(req, res) {
+  // This is an API route, which only runs on the server side
+  // But we still need to ensure the imports worked correctly
+  if (!fs || !path || !ExcelJS) {
+    return res.status(500).json({ error: 'Server-side modules not available' });
+  }
+
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }

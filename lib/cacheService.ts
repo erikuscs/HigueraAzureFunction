@@ -1,6 +1,20 @@
-import { createClient } from 'redis';
+import dynamic from 'next/dynamic';
 import { AppError } from './utils';
-import { trackException } from './monitoringService';
+
+// Import only on the server side
+let redisModule: any = null;
+let trackExceptionFn: any = null;
+
+// Only import server-side modules when running on the server
+if (typeof window === 'undefined') {
+  try {
+    redisModule = require('redis');
+    const { trackException } = require('./monitoringService');
+    trackExceptionFn = trackException;
+  } catch (error) {
+    console.error('Error importing server-side modules:', error);
+  }
+}
 
 interface ICacheService {
     get(key: string): Promise<any>;
@@ -17,7 +31,9 @@ class RedisCache implements ICacheService {
     private readonly MAX_RETRY_DELAY = 5000; // ms
 
     constructor() {
-        this.initializeRedis();
+        if (typeof window === 'undefined' && redisModule) {
+            this.initializeRedis();
+        }
     }
 
     private async initializeRedis() {
@@ -27,7 +43,7 @@ class RedisCache implements ICacheService {
                 throw new Error('Redis connection string is not configured');
             }
 
-            this.client = createClient({
+            this.client = redisModule.createClient({
                 url: connectionString,
                 socket: {
                     tls: true,
@@ -47,10 +63,12 @@ class RedisCache implements ICacheService {
 
             // Handle connection events
             this.client.on('error', (err) => {
-                trackException(err, { 
-                    service: 'RedisCache',
-                    event: 'connection-error'
-                });
+                if (trackExceptionFn) {
+                    trackExceptionFn(err, { 
+                        service: 'RedisCache',
+                        event: 'connection-error'
+                    });
+                }
                 this.isConnected = false;
                 this.scheduleReconnect();
             });
@@ -64,18 +82,22 @@ class RedisCache implements ICacheService {
             });
 
             this.client.on('reconnecting', () => {
-                trackException(
-                    new Error('Redis reconnecting'), 
-                    { service: 'RedisCache', event: 'reconnecting' }
-                );
+                if (trackExceptionFn) {
+                    trackExceptionFn(
+                        new Error('Redis reconnecting'), 
+                        { service: 'RedisCache', event: 'reconnecting' }
+                    );
+                }
             });
 
             await this.client.connect();
         } catch (error) {
-            trackException(error as Error, { 
-                service: 'RedisCache',
-                operation: 'initializeRedis'
-            });
+            if (trackExceptionFn) {
+                trackExceptionFn(error as Error, { 
+                    service: 'RedisCache',
+                    operation: 'initializeRedis'
+                });
+            }
             this.isConnected = false;
             this.scheduleReconnect();
         }
@@ -89,15 +111,21 @@ class RedisCache implements ICacheService {
         this.connectionTimeout = setTimeout(() => {
             this.connectionTimeout = null;
             this.initializeRedis().catch(err => {
-                trackException(err, { 
-                    service: 'RedisCache',
-                    operation: 'scheduleReconnect'
-                });
+                if (trackExceptionFn) {
+                    trackExceptionFn(err, { 
+                        service: 'RedisCache',
+                        operation: 'scheduleReconnect'
+                    });
+                }
             });
         }, 5000); // Try to reconnect after 5 seconds
     }
 
     async get(key: string): Promise<any> {
+        if (typeof window !== 'undefined') {
+            return null; // On client side, just return null
+        }
+        
         if (!this.isConnected) {
             throw new AppError('Redis not connected', 503);
         }
@@ -106,16 +134,22 @@ class RedisCache implements ICacheService {
             const value = await this.client.get(key);
             return value ? JSON.parse(value) : null;
         } catch (error) {
-            trackException(error as Error, {
-                service: 'RedisCache',
-                operation: 'get',
-                key
-            });
+            if (trackExceptionFn) {
+                trackExceptionFn(error as Error, {
+                    service: 'RedisCache',
+                    operation: 'get',
+                    key
+                });
+            }
             throw error;
         }
     }
 
     async set(key: string, value: any, ttlSeconds: number = 300): Promise<void> {
+        if (typeof window !== 'undefined') {
+            return; // On client side, just return
+        }
+        
         if (!this.isConnected) {
             throw new AppError('Redis not connected', 503);
         }
@@ -126,16 +160,22 @@ class RedisCache implements ICacheService {
                 EX: ttlSeconds
             });
         } catch (error) {
-            trackException(error as Error, {
-                service: 'RedisCache',
-                operation: 'set',
-                key
-            });
+            if (trackExceptionFn) {
+                trackExceptionFn(error as Error, {
+                    service: 'RedisCache',
+                    operation: 'set',
+                    key
+                });
+            }
             throw error;
         }
     }
 
     async delete(key: string): Promise<void> {
+        if (typeof window !== 'undefined') {
+            return; // On client side, just return
+        }
+        
         if (!this.isConnected) {
             throw new AppError('Redis not connected', 503);
         }
@@ -143,11 +183,13 @@ class RedisCache implements ICacheService {
         try {
             await this.client.del(key);
         } catch (error) {
-            trackException(error as Error, {
-                service: 'RedisCache',
-                operation: 'delete',
-                key
-            });
+            if (trackExceptionFn) {
+                trackExceptionFn(error as Error, {
+                    service: 'RedisCache',
+                    operation: 'delete',
+                    key
+                });
+            }
             throw error;
         }
     }
@@ -215,11 +257,13 @@ class CacheService implements ICacheService {
         try {
             return await this.primaryCache.get(key);
         } catch (error) {
-            trackException(error as Error, {
-                service: 'CacheService',
-                operation: 'get',
-                key
-            });
+            if (trackExceptionFn) {
+                trackExceptionFn(error as Error, {
+                    service: 'CacheService',
+                    operation: 'get',
+                    key
+                });
+            }
             return this.fallbackCache.get(key);
         }
     }
@@ -228,11 +272,13 @@ class CacheService implements ICacheService {
         try {
             await this.primaryCache.set(key, value, ttlSeconds);
         } catch (error) {
-            trackException(error as Error, {
-                service: 'CacheService',
-                operation: 'set',
-                key
-            });
+            if (trackExceptionFn) {
+                trackExceptionFn(error as Error, {
+                    service: 'CacheService',
+                    operation: 'set',
+                    key
+                });
+            }
             await this.fallbackCache.set(key, value, ttlSeconds);
         }
     }
@@ -241,11 +287,13 @@ class CacheService implements ICacheService {
         try {
             await this.primaryCache.delete(key);
         } catch (error) {
-            trackException(error as Error, {
-                service: 'CacheService',
-                operation: 'delete',
-                key
-            });
+            if (trackExceptionFn) {
+                trackExceptionFn(error as Error, {
+                    service: 'CacheService',
+                    operation: 'delete',
+                    key
+                });
+            }
             await this.fallbackCache.delete(key);
         }
     }
