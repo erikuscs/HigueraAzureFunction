@@ -4,6 +4,7 @@ import { getMicrosoftAccessToken } from "../lib/msalAuth"
 import HoursTrackingChart from "../components/HoursTrackingChart"
 import TaskUpdateForm from "../components/TaskUpdateForm"
 import WorkerHoursForm from "../components/WorkerHoursForm"
+import Link from "next/link"
 
 // Remove direct imports of server-only modules
 // import { cacheGet, cacheSet } from '../lib/cacheService';
@@ -52,6 +53,26 @@ export default function ExecutiveSummary() {
   const [shareLink, setShareLink] = useState("")
   const version = "v1.0.0"
 
+  // Rest of your component code...
+
+  // Add navigation component
+  const Navigation = () => (
+    <nav className="bg-blue-800 text-white py-3 px-6 mb-6 rounded-lg">
+      <div className="flex items-center justify-between">
+        <div className="font-bold text-xl">Higuera Azure Project</div>
+        <div className="flex space-x-6">
+          <Link href="/ExecutiveSummary">
+            <span className="hover:text-blue-200 font-medium cursor-pointer">Executive Summary</span>
+          </Link>
+          <Link href="/dashboard">
+            <span className="hover:text-blue-200 font-medium cursor-pointer">Azure Dashboard</span>
+          </Link>
+        </div>
+      </div>
+    </nav>
+  );
+
+  // Rest of your code remains the same
   useEffect(() => {
     const publicPath = process.env.NEXT_PUBLIC_BASE_PATH || ""
     fetch(`${publicPath}/data/data.json`)
@@ -223,6 +244,8 @@ export default function ExecutiveSummary() {
 
   return (
     <div className="p-6 space-y-8 bg-white text-gray-800 font-sans">
+      <Navigation />
+      
       <div className="flex justify-between items-center border-b pb-4">
         <h1 className="text-3xl font-bold tracking-tight text-blue-900">Executive Summary</h1>
         <div className="flex items-center gap-3">
