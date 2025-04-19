@@ -4,10 +4,9 @@ const { getSecretConfig } = require("../lib/config");
 const { ipRestriction, validateRequest, monitorPerformance } = require("../lib/middleware");
 const { trackException, trackMetric, trackEvent } = require("../lib/monitoringService");
 const { TokenCredentialAuthenticationProvider } = require("@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials");
-const { withRetry, AppError, logError } = require('../lib/utils');
+const { withRetry, AppError, logError, formatDashboardData } = require('../lib/utils');
 const { cacheService } = require('../lib/cacheService');
 const { applySecurityMiddleware, addSecurityHeaders, validateToken } = require('../lib/securityMiddleware');
-const { formatDashboardData } = require('../lib/utils');
 require("isomorphic-fetch");
 
 function sleep(ms) {
@@ -41,37 +40,7 @@ function formatCurrency(number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(number);
 }
 
-function formatDashboardData(data) {
-  const kpiSection = `
-HIGUERA PROJECT - EXECUTIVE SUMMARY
-
-KEY METRICS:
-• Total Budget: ${formatCurrency(data.kpis.totalBudget)}
-• Spent: ${formatCurrency(data.kpis.spent)}
-• Remaining: ${formatCurrency(data.kpis.remaining)}
-• Overrun Risk: ${data.kpis.risk}
-
-RECENT ISSUES:`;
-
-  const issuesSection = data.issues
-    .slice(0, 5) // Show only 5 most recent issues
-    .map(issue => `
-• ${issue.date} - ${issue.system}
-  Issue: ${issue.issue}
-  Impact: ${issue.impact}
-  Accountability: ${issue.accountability}`)
-    .join('\n');
-
-  const scheduleSection = `
-
-SCHEDULE STATUS:
-${data.schedule.map(item => `• ${item.task}: Plan ${item.Planned}% vs Actual ${item.Actual}%`).join('\n')}
-
-For detailed charts and visualizations, please visit the project dashboard.
-`;
-
-  return `${kpiSection}${issuesSection}${scheduleSection}`;
-}
+// Removed duplicate formatDashboardData function as it's already imported from ../lib/utils
 
 module.exports = async function (context, req) {
     const startTime = Date.now();
@@ -81,7 +50,7 @@ module.exports = async function (context, req) {
         // Apply security middleware
         await new Promise((resolve, reject) => {
             applySecurityMiddleware(context, req, (err) => {
-                if (err) reject(err);
+                if (err) reject(new Error(err.message || 'Security middleware error'));
                 else resolve();
             });
         });
