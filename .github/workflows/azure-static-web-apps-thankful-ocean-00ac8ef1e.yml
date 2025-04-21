@@ -2,86 +2,25 @@ name: Azure Static Web Apps CI/CD
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v3
-        with:
-          submodules: true
-          lfs: false
-      
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Build Next.js app
-        run: |
-          # Debug: Show current directory contents before build
-          echo "Directory contents before build:"
-          ls -la
-          
-          # Set NODE_ENV to production for optimal build
-          export NODE_ENV=production
-          npm run build
-          
-          # Debug: Check build output directories
-          echo "Directory contents after build:"
-          ls -la
-          echo "Content of .next directory:"
-          ls -la .next || echo ".next directory not found"
-          echo "Check if 'out' directory exists:"
-          ls -la out || echo "out directory not found"
-        env:
-          AZURE_FUNCTION_URL: https://higuera-dev-func.azurewebsites.net
-      
+
       - name: Build And Deploy
-        id: builddeploy
-        env:
-          # Set the environment variable for deployment token to ensure it's available
-          INPUT_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }}
         uses: Azure/static-web-apps-deploy@v1
         with:
-          # Provide both parameter versions to handle version differences in the action
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }}
-          deployment_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          ###### Repository/Build Configurations ######
-          app_location: "/" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: ".next" # Built app content directory (Next.js default)
-          skip_app_build: true # Skip the build since we're doing it separately
-          # Add this parameter to allow deployment to continue if there are missing secrets
-          is_static_export: true  # Explicitly mark as static export for Next.js
-          ###### End of Repository/Build Configurations ######
-
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
-    steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        env:
-          # Set the environment variable for deployment token for close operation
-          INPUT_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }}
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          # Provide both parameter versions to handle version differences in the action
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }}
-          deployment_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }}
-          action: "close"
+          app_location: "/"         # root folder
+          api_location: ""          # no separate API folder, use pages/api
+          output_location: ".next" # Next.js default output
+          skip_app_build: false      # let Oryx handle build
+          #### Remove any unsupported or custom build parameters ####
