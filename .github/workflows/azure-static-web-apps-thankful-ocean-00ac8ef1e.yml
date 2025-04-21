@@ -29,7 +29,20 @@ jobs:
         run: npm ci
       
       - name: Build Next.js app
-        run: npm run build && npm run export
+        run: |
+          # Debug: Show current directory contents before build
+          echo "Directory contents before build:"
+          ls -la
+          
+          # Set NODE_ENV to production for optimal build
+          export NODE_ENV=production
+          npm run build
+          
+          # Debug: Check if 'out' directory exists after build
+          echo "Directory contents after build:"
+          ls -la
+          echo "Content of .next directory:"
+          ls -la .next || echo ".next directory not found"
         env:
           AZURE_FUNCTION_URL: https://higuera-dev-func.azurewebsites.net
       
@@ -40,11 +53,11 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          ###### Repository/Build Configurations ######
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
-          output_location: "out" # Next.js static export output directory
-          skip_app_build: true # Skip the build since we're doing it separately above
+          output_location: ".next" # Built app content directory (Next.js default)
+          skip_app_build: true # Skip the build since we're doing it separately
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
