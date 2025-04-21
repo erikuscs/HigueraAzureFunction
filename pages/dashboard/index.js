@@ -6,6 +6,19 @@ import HoursTrackingChart from '../../components/HoursTrackingChart';
 import TaskSummary from '../../components/dashboard/TaskSummary';
 import BudgetOverview from '../../components/dashboard/BudgetOverview';
 import ProjectStatus from '../../components/dashboard/ProjectStatus';
+import fs from 'fs'
+import path from 'path'
+
+export async function getStaticProps() {
+  const dataFilePath = path.join(process.cwd(), 'public', 'data', 'data.json')
+  const fileContents = fs.readFileSync(dataFilePath, 'utf8')
+  const data = JSON.parse(fileContents)
+  return {
+    props: {
+      dashboardData: data
+    }
+  }
+}
 
 // Navigation component for consistent UI
 const Navigation = () => (
@@ -24,7 +37,8 @@ const Navigation = () => (
   </nav>
 );
 
-export default function HigueraDashboard() {
+export default function HigueraDashboard({ dashboardData }) {
+  const { kpis, weeklyCost, breakdown, schedule, issues, hoursTracking } = dashboardData
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

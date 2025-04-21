@@ -1,7 +1,7 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*"]
+    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/*.{ico,png}"]
   },
   "routes": [
     {
@@ -19,14 +19,16 @@
     }
   },
   "globalHeaders": {
-    "content-security-policy": "default-src https: 'unsafe-eval' 'unsafe-inline'; object-src 'none'",
+    "content-security-policy": "default-src 'self' https: 'unsafe-eval' 'unsafe-inline'; object-src 'none'",
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
     "X-XSS-Protection": "1; mode=block"
   },
   "mimeTypes": {
     ".json": "application/json",
-    ".html": "text/html"
+    ".html": "text/html",
+    ".js": "text/javascript",
+    ".css": "text/css"
   },
   "platform": {
     "apiRuntime": "node:18"
@@ -36,7 +38,7 @@
   },
   "functions": {
     "api": {
-      "functionAppUrl": "https://%AZURE_FUNCTION_APP_NAME%.azurewebsites.net"
+      "functionAppUrl": "https://higuera-dev-func.azurewebsites.net"
     }
   }
 }
