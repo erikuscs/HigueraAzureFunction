@@ -1,0 +1,42 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*"]
+  },
+  "routes": [
+    {
+      "route": "/api/*",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/*",
+      "allowedRoles": ["anonymous"]
+    }
+  ],
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/404.html"
+    }
+  },
+  "globalHeaders": {
+    "content-security-policy": "default-src https: 'unsafe-eval' 'unsafe-inline'; object-src 'none'",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "X-XSS-Protection": "1; mode=block"
+  },
+  "mimeTypes": {
+    ".json": "application/json",
+    ".html": "text/html"
+  },
+  "platform": {
+    "apiRuntime": "node:18"
+  },
+  "networking": {
+    "allowedIpRanges": ["any"]
+  },
+  "functions": {
+    "api": {
+      "functionAppUrl": "https://%AZURE_FUNCTION_APP_NAME%.azurewebsites.net"
+    }
+  }
+}
