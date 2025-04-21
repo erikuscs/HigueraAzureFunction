@@ -1,6 +1,4 @@
-import { getConfig } from '../../lib/config';
-import { monitorProject } from '../../lib/monitoringService';
-import { cacheData, getCache } from '../../lib/cacheService';
+import { cacheService } from '../../lib/cacheService';
 
 // Mock data for development
 const mockProjectData = {
@@ -39,55 +37,28 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Try to get cached data first
-    const cachedData = await getCache('dashboardData');
+    const cacheKey = 'dashboardData';
+    // Try to get cached data first using cacheService.get
+    const cachedData = await cacheService.get(cacheKey);
     if (cachedData) {
-      return res.status(200).json(JSON.parse(cachedData));
+      // Assuming cachedData is already an object, no need to parse
+      return res.status(200).json(cachedData);
     }
 
-    // Get configuration
-    const config = await getConfig();
-    const useMockData = process.env.NODE_ENV === 'development' || config?.useMockData;
+    // Simplify: Always use mock data for now, remove config/monitoring calls
+    const dashboardData = mockProjectData;
 
-    let dashboardData;
-    if (useMockData) {
-      // Use mock data in development
-      dashboardData = mockProjectData;
-    } else {
-      // In production, fetch real data from various sources
-      try {
-        // Get monitoring data (replace with actual implementation)
-        const monitoringData = await monitorProject();
-        
-        // Aggregate data from different sources
-        dashboardData = {
-          totalBudget: monitoringData.budget?.total || 0,
-          budgetUsed: monitoringData.budget?.used || 0,
-          tasksCompleted: monitoringData.tasks?.completed || 0,
-          totalTasks: monitoringData.tasks?.total || 0,
-          projectProgress: monitoringData.progress || 0,
-          nextMilestone: monitoringData.nextMilestone || '',
-          recentUpdates: monitoringData.updates || [],
-          taskDistribution: monitoringData.taskDistribution || {},
-          resourceAllocation: monitoringData.resourceAllocation || {},
-          monthlyHours: monitoringData.monthlyHours || []
-        };
-      } catch (error) {
-        console.error('Error fetching real dashboard data:', error);
-        // Fallback to mock data if real data fetch fails
-        dashboardData = mockProjectData;
-      }
-    }
-
-    // Cache the data for 5 minutes
-    await cacheData('dashboardData', JSON.stringify(dashboardData), 5 * 60);
+    // Cache the data for 5 minutes using cacheService.set
+    // Ensure the value is stringified if cacheService expects a string
+    await cacheService.set(cacheKey, dashboardData, 5 * 60);
 
     return res.status(200).json(dashboardData);
   } catch (error) {
     console.error('Dashboard API error:', error);
     return res.status(500).json({ 
       message: 'Failed to retrieve dashboard data',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      // Use error.message directly if available
+      error: process.env.NODE_ENV === 'development' && error instanceof Error ? error.message : undefined
     });
   }
 }

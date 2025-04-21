@@ -8,12 +8,6 @@
     }
   },
   "services": {
-    "staticwebapp": {
-      "path": ".",
-      "host": "staticwebapp",
-      "language": "js",
-      "projectFile": "package.json"
-    },
     "functionapp": {
       "path": ".",
       "host": "function",
@@ -22,12 +16,6 @@
     }
   },
   "deploy": {
-    "staticwebapp": {
-      "preDeploy": "npm ci && npm run build",
-      "type": "staticWebApp",
-      "resourceName": "${RESOURCE_NAME}-swa",
-      "dist": ".next"
-    },
     "functionapp": {
       "type": "function",
       "resourceName": "${RESOURCE_NAME}-func"

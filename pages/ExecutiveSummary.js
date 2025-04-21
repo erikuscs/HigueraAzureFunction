@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react"
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, BarChart, Bar } from "recharts"
-import { getMicrosoftAccessToken } from "../lib/msalAuth"
+import { authService } from "../lib/msalAuth"
 import HoursTrackingChart from "../components/HoursTrackingChart"
 import TaskUpdateForm from "../components/TaskUpdateForm"
 import WorkerHoursForm from "../components/WorkerHoursForm"
@@ -118,7 +118,7 @@ export default function ExecutiveSummary() {
     const sendStartTime = performance.now();
 
     try {
-      const token = await getMicrosoftAccessToken().catch(error => {
+      const token = await authService.acquireToken(['Mail.Send']).catch(error => { // Use appropriate scope for sending mail
         console.error('Authentication error:', error);
         throw new Error("Authentication failed. Please sign in again.");
       });
@@ -148,9 +148,9 @@ export default function ExecutiveSummary() {
       console.error('Email report error:', error);
       
       setEmailError(
-        error.message.includes("Authentication failed")
+        error instanceof Error && error.message.includes("Authentication failed")
           ? "⚠️ Authentication error. Please sign in and try again."
-          : `⚠️ ${error.message}`
+          : error instanceof Error ? `⚠️ ${error.message}` : "⚠️ An unknown error occurred while sending the email."
       );
     } finally {
       setIsSendingEmail(false);

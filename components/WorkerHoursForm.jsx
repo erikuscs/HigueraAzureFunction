@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { getMicrosoftAccessToken } from "../lib/msalAuth";
+// Import the authService instance
+import { authService } from "../lib/msalAuth";
 
 const WorkerHoursForm = ({ onHoursLogged }) => {
   const [workerName, setWorkerName] = useState('');
@@ -80,7 +81,8 @@ const WorkerHoursForm = ({ onHoursLogged }) => {
     setError('');
     
     try {
-      const token = await getMicrosoftAccessToken().catch(error => {
+      // Use authService.acquireToken
+      const token = await authService.acquireToken(['api://<your_api_client_id>/Hours.Log']).catch(error => { // Replace <your_api_client_id> with your actual API client ID if needed
         throw new Error("Authentication failed. Please sign in again.");
       });
       
@@ -122,7 +124,8 @@ const WorkerHoursForm = ({ onHoursLogged }) => {
       }
     } catch (error) {
       console.error('Failed to log hours:', error);
-      setError(error.message || 'An error occurred while logging hours');
+      // Use error.message directly if available
+      setError(error instanceof Error ? error.message : 'An error occurred while logging hours');
     } finally {
       setIsSubmitting(false);
     }

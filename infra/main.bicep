@@ -5,7 +5,8 @@ param projectName string = 'higuera'
 param environment string = 'dev'
 
 @description('The location for all resources')
-param location string = resourceGroup().location
+// Update default location to a supported one like 'eastus2'
+param location string = 'eastus2'
 
 @description('The email recipients for notifications')
 param emailRecipients string
@@ -100,7 +101,7 @@ resource plan 'Microsoft.Web/serverfarms@2023-01-01' = {
 resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
   name: '${uniqueName}-func'
   location: location
-  tags: tags
+  tags: union(tags, { 'azd-service-name': 'functionapp' }) // Add azd tag
   kind: 'functionapp'
   identity: {
     type: 'SystemAssigned'
@@ -115,11 +116,11 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storage.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storage.listKeys().keys[0].value}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storage.name};EndpointSuffix=${az.environment().suffixes.storage};AccountKey=${storage.listKeys().keys[0].value}'
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storage.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storage.listKeys().keys[0].value}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storage.name};EndpointSuffix=${az.environment().suffixes.storage};AccountKey=${storage.listKeys().keys[0].value}'
         }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
@@ -127,7 +128,7 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
         }
         {
           name: 'REDIS_CONNECTION_STRING'
-          value: '${redisCache.properties.hostName}:${redisCache.properties.sslPort},password=${listKeys(redisCache.id, redisCache.apiVersion).primaryKey},ssl=True,abortConnect=False'
+          value: '${redisCache.properties.hostName}:${redisCache.properties.sslPort},password=${redisCache.listKeys().primaryKey},ssl=True,abortConnect=False'
         }
         {
           name: 'KEY_VAULT_URL'
@@ -168,8 +169,9 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
 // Static Web App for Next.js
 resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
   name: '${uniqueName}-swa'
+  // Use the location parameter
   location: location
-  tags: tags
+  tags: union(tags, { 'azd-service-name': 'staticwebapp' }) // Add azd tag
   sku: {
     name: 'Standard'
     tier: 'Standard'
@@ -182,16 +184,11 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
     buildProperties: {
       appLocation: '/'
       apiLocation: ''
-      outputLocation: 'out'
+      // Align outputLocation with azure.yaml dist setting
+      outputLocation: '.next'
       appBuildCommand: 'npm run build'
       apiBuildCommand: ''
     }
-    customDomains: [
-      {
-        name: customDomain
-        validationMethod: 'dns-txt-token'
-      }
-    ]
   }
   identity: {
     type: 'SystemAssigned'
@@ -234,9 +231,10 @@ resource staticWebAppKeyVaultRoleAssignment 'Microsoft.Authorization/roleAssignm
 
 // Store Redis connection string in Key Vault
 resource redisConnectionSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
-  name: '${keyVault.name}/RedisConnectionString'
+  parent: keyVault
+  name: 'RedisConnectionString'
   properties: {
-    value: '${redisCache.properties.hostName}:${redisCache.properties.sslPort},password=${listKeys(redisCache.id, redisCache.apiVersion).primaryKey},ssl=True,abortConnect=False'
+    value: '${redisCache.properties.hostName}:${redisCache.properties.sslPort},password=${redisCache.listKeys().primaryKey},ssl=True,abortConnect=False'
   }
 }
 
