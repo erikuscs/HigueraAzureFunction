@@ -2,25 +2,45 @@ name: Azure Static Web Apps CI/CD
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build_and_deploy_job:
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v3
 
-      - name: Build And Deploy
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and Export
+        run: |
+          npm run build
+          npm run export
+
+      - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "/"         # root folder
-          api_location: ""          # no separate API folder, use pages/api
-          output_location: ".next" # Next.js default output
-          skip_app_build: false      # let Oryx handle build
-          #### Remove any unsupported or custom build parameters ####
+          action: upload
+          app_location: "/"
+          api_location: ""
+          output_location: "out"
+          skip_app_build: true
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }}
+          action: close
