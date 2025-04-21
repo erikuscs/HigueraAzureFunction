@@ -14,7 +14,6 @@
     "func:start": "func start",
     "dev:all": "concurrently \"npm run dev\" \"npm run func:start\"",
     "deploy": "npm run build",
-    "postinstall": "node ./scripts/fix-dependencies.js",
     "fix:deps": "node ./scripts/fix-dependencies.js",
     "excel-api": "node excel-export-test/excel-api.js"
   },
