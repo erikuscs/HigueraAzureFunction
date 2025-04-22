@@ -20,6 +20,12 @@ var tags = {
   project: projectName
 }
 
+// Add reference to the existing user-assigned identity
+resource higueraAdminIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: 'higuera_admin'
+  scope: resourceGroup('higuera-rg') // Use the correct resource group name
+}
+
 // Key Vault for storing secrets
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
   name: '${uniqueName}-kv'
@@ -103,8 +109,13 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
   location: location
   tags: union(tags, { 'azd-service-name': 'functionapp' }) // Add azd tag
   kind: 'functionapp'
+  // Update identity to use UserAssigned
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      // Reference the existing identity resource ID
+      '${higueraAdminIdentity.id}': {}
+    }
   }
   properties: {
     serverFarmId: plan.id
@@ -209,11 +220,12 @@ resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-09-01' = {
 
 // Grant Function App access to Key Vault
 resource keyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(keyVault.id, functionApp.id, 'Key Vault Secrets User')
+  name: guid(keyVault.id, functionApp.id, 'Key Vault Secrets User') // Keep guid consistent or update if needed
   scope: keyVault
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6') // Key Vault Secrets User
-    principalId: functionApp.identity.principalId
+    // Update principalId to use the user-assigned identity's principalId
+    principalId: higueraAdminIdentity.properties.principalId
     principalType: 'ServicePrincipal'
   }
 }
