@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Button } from '../../components/ui/button';
@@ -13,9 +12,23 @@ export async function getStaticProps() {
   const dataFilePath = path.join(process.cwd(), 'public', 'data', 'data.json')
   const fileContents = fs.readFileSync(dataFilePath, 'utf8')
   const data = JSON.parse(fileContents)
+  // Ensure the data structure matches what the component expects
+  // Add default values if necessary to prevent runtime errors
+  const defaultData = {
+    totalBudget: 0,
+    budgetUsed: 0,
+    tasksCompleted: 0,
+    totalTasks: 0,
+    projectProgress: 0,
+    nextMilestone: 'N/A',
+    recentUpdates: [],
+    // Add other expected fields from data.json if needed
+  };
+  const dashboardData = { ...defaultData, ...data };
+
   return {
     props: {
-      dashboardData: data
+      dashboardData // Pass the potentially merged data
     }
   }
 }
@@ -38,50 +51,13 @@ const Navigation = () => (
 );
 
 export default function HigueraDashboard({ dashboardData }) {
-  const { kpis, weeklyCost, breakdown, schedule, issues, hoursTracking } = dashboardData
-  const [projectData, setProjectData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // Removed useState for projectData, loading, error
+  // Removed useEffect hook
 
-  useEffect(() => {
-    // Fetch dashboard data
-    const fetchData = async () => {
-      try {
-        // Replace with actual API endpoint when available
-        const response = await fetch('/api/dashboardData');
-        if (!response.ok) {
-          throw new Error('Failed to load dashboard data');
-        }
-        const data = await response.json();
-        setProjectData(data);
-      } catch (err) {
-        console.error('Error fetching dashboard data:', err);
-        setError('Failed to load dashboard data. Please try again later.');
-        // Fallback to mock data for development
-        setProjectData({
-          totalBudget: 150000,
-          budgetUsed: 65000,
-          tasksCompleted: 24,
-          totalTasks: 42,
-          projectProgress: 57,
-          nextMilestone: '2025-05-15',
-          recentUpdates: [
-            { date: '2025-04-15', description: 'Phase 1 completed' },
-            { date: '2025-04-10', description: 'Infrastructure deployment' },
-            { date: '2025-04-05', description: 'Design approval' }
-          ]
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Directly use dashboardData from props
+  const { totalBudget, budgetUsed, tasksCompleted, totalTasks, projectProgress, nextMilestone, recentUpdates } = dashboardData || {}; // Add default empty object for safety
 
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return <div className="flex justify-center items-center h-screen">Loading dashboard...</div>;
-  }
+  // Removed loading check
 
   return (
     // Page background and vertical padding
@@ -100,20 +76,21 @@ export default function HigueraDashboard({ dashboardData }) {
         </header>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <BudgetOverview 
-            totalBudget={projectData.totalBudget} 
-            budgetUsed={projectData.budgetUsed} 
+          <BudgetOverview
+            totalBudget={totalBudget} // Use destructured prop
+            budgetUsed={budgetUsed} // Use destructured prop
           />
-          <ProjectStatus 
-            tasksCompleted={projectData.tasksCompleted}
-            totalTasks={projectData.totalTasks}
-            projectProgress={projectData.projectProgress}
-            nextMilestone={projectData.nextMilestone}
+          <ProjectStatus
+            tasksCompleted={tasksCompleted} // Use destructured prop
+            totalTasks={totalTasks} // Use destructured prop
+            projectProgress={projectProgress} // Use destructured prop
+            nextMilestone={nextMilestone} // Use destructured prop
           />
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold mb-4">Recent Updates</h2>
             <ul className="space-y-2">
-              {projectData.recentUpdates.map((update, index) => (
+              {/* Ensure recentUpdates exists before mapping */}
+              {recentUpdates && recentUpdates.map((update, index) => (
                 <li key={index} className="border-b pb-2">
                   <span className="text-sm text-gray-500">{update.date}</span>
                   <p className="text-gray-700">{update.description}</p>
