@@ -220,13 +220,14 @@ resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-09-01' = {
 
 // Grant Function App access to Key Vault
 resource keyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(keyVault.id, functionApp.id, 'Key Vault Secrets User') // Keep guid consistent or update if needed
+  // Add a suffix to the role name guid to ensure a new assignment is created
+  name: guid(keyVault.id, functionApp.id, 'Key Vault Secrets User-UAI')
   scope: keyVault
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6') // Key Vault Secrets User
     // Update principalId to use the user-assigned identity's principalId
     principalId: higueraAdminIdentity.properties.principalId
-    principalType: 'ServicePrincipal'
+    principalType: 'ServicePrincipal' // Keep as ServicePrincipal for User Assigned Identity
   }
 }
 
