@@ -1,7 +1,14 @@
 {
   "/_app": "pages/_app.js",
+  "/ExecutiveSummary": "pages/ExecutiveSummary.js",
+  "/api/dashboardData": "pages/api/dashboardData.js",
+  "/api/exportExcel": "pages/api/exportExcel.js",
+  "/api/logWorkerHours": "pages/api/logWorkerHours.js",
+  "/api/sendEmail": "pages/api/sendEmail.js",
+  "/api/updateTask": "pages/api/updateTask.js",
+  "/": "pages/index.js",
+  "/api/generatePdf": "pages/api/generatePdf.js",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
   "/dashboard": "pages/dashboard.js",
-  "/ExecutiveSummary": "pages/ExecutiveSummary.js"
+  "/_document": "pages/_document.js"
 }

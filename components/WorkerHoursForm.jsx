@@ -73,7 +73,6 @@ const WorkerHoursForm = ({ onHoursLogged }) => {
         // Ensure NEXT_PUBLIC_AZURE_FUNCTION_URL is set in your environment variables
         // Verify '/api/logWorkerHours' is the correct route for your Azure Function
         const functionUrl = `${process.env.NEXT_PUBLIC_AZURE_FUNCTION_URL}/api/logWorkerHours`;
-      const response = await fetch('/api/logWorkerHours', {
         const response = await fetch(functionUrl, { // <-- Use functionUrl here
           method: 'POST',
           headers: {
