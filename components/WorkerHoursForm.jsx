@@ -59,77 +59,52 @@ const WorkerHoursForm = ({ onHoursLogged }) => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validation
-    if (!workerName) {
-      setError('Please select a worker');
-      return;
-    }
-    
-    if (!weekEnding) {
-      setError('Please select a week ending date');
-      return;
-    }
-    
-    const totalHours = calculateTotalHours();
-    if (totalHours <= 0) {
-      setError('Please enter at least some hours');
-      return;
-    }
-    
-    setIsSubmitting(true);
-    setError('');
-    
+    setStatus('Submitting...');
+    setError(null);
+
     try {
-      // Use authService.acquireToken
-      const token = await authService.acquireToken(['api://<your_api_client_id>/Hours.Log']).catch(error => { // Replace <your_api_client_id> with your actual API client ID if needed
-        throw new Error("Authentication failed. Please sign in again.");
-      });
-      
-      // We'll implement this API endpoint next
+        // Use authService.acquireToken
+        // IMPORTANT: Replace <your_api_client_id> with the actual Application (client) ID or Application ID URI for your backend API registration
+        const token = await authService.acquireToken(['api://211478db-e6e4-4752-a627-00a64033eb85/Hours.Log']).catch(error => { // Using the provided Client ID
+            throw new Error("Authentication failed. Please sign in again.");
+        });
+
+        // Construct the full Azure Function URL
+        // Ensure NEXT_PUBLIC_AZURE_FUNCTION_URL is set in your environment variables
+        // Verify '/api/logWorkerHours' is the correct route for your Azure Function
+        const functionUrl = `${process.env.NEXT_PUBLIC_AZURE_FUNCTION_URL}/api/logWorkerHours`;
       const response = await fetch('/api/logWorkerHours', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          workerName,
-          weekEnding,
-          hours,
-          totalHours: calculateTotalHours()
-        })
+        const response = await fetch(functionUrl, { // <-- Use functionUrl here
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+              workerName,
+              weekEnding,
+              hours,
+              totalHours: calculateTotalHours() // Assuming calculateTotalHours is defined elsewhere
+          })
       });
-      
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to log hours');
+          const errorData = await response.json().catch(() => ({ message: 'Failed to log hours. Invalid response from server.' }));
+          throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
       }
-      
-      setSuccess(`Successfully logged ${calculateTotalHours()} hours for ${workerName}`);
-      
-      // Reset form
-      setHours({
-        monday: 0,
-        tuesday: 0,
-        wednesday: 0,
-        thursday: 0,
-        friday: 0
-      });
-      
-      // Notify parent component if callback provided
-      if (onHoursLogged) {
-        const result = await response.json();
-        onHoursLogged(result);
-      }
-    } catch (error) {
-      console.error('Failed to log hours:', error);
-      // Use error.message directly if available
-      setError(error instanceof Error ? error.message : 'An error occurred while logging hours');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+
+      const result = await response.json();
+      setStatus(`Hours logged successfully: ${result.message}`);
+      // Optionally reset form
+      // setWorkerName('');
+      // setWeekEnding('');
+      // setHours({ Mon: '', Tue: '', Wed: '', Thu: '', Fri: '', Sat: '', Sun: '' });
+  } catch (err) {
+      setError(err.message || 'An unexpected error occurred.');
+      setStatus('Error');
+      trackException(err, { operation: 'WorkerHoursForm_Submit' });
+  }
+};
   
   return (
     <div className="worker-hours-form bg-white p-4 rounded-lg shadow">
