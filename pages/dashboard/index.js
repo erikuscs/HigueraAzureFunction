@@ -104,7 +104,8 @@ export default function HigueraDashboard({ dashboardData }) {
         <div className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Hours Tracking</h2>
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <HoursTrackingChart />
+            {/* Pass weekly data into the chart */}
+            <HoursTrackingChart data={dashboardData.hoursTracking?.weeklyHours || []} />
           </div>
         </div>
 
