@@ -1,38 +1,113 @@
-# Next.js Project
+# Higuera Azure Project Dashboard
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This repository contains two main parts:
 
-## Getting Started
+1. **Next.js Front End**: A React‑based dashboard UI at `/pages/dashboard/index.js` that reads data from `public/data/data.json`.
+2. **Azure Functions Back End**: Serverless APIs under `/exportExcel` and `/sendEmail` to export an Excel report or send an executive summary email.
 
-First, run the development server:
+---
+
+## Prerequisites
+
+- Node.js (>=18) and npm
+- Azure Functions Core Tools (for local function host)
+- Git (for source control)
+
+---
+
+## Folder Structure
+
+```text
+/Users/erikherring/HigueraAzureFunction
+├─ public/data/data.json      # JSON source for dashboard
+├─ pages/dashboard/index.js   # Dashboard page
+├─ components/                # React UI components
+│  └─ HoursTrackingChart.tsx  # Chart for hours tracking
+├─ exportExcel/               # Azure Function to generate Excel
+│  └─ index.js
+├─ sendEmail/                 # Azure Function to send email
+│  └─ index.js
+├─ excel-export-test/         # Standalone Excel script (Node)
+│  └─ generate-excel.js
+├─ infra/                     # Bicep IaC templates
+│  └─ main.bicep
+├─ README.md                  # This file
+└─ package.json               # npm scripts & dependencies
+```
+
+---
+
+## Quick Start
+
+### 1. Install dependencies
+
+```bash
+cd /Users/erikherring/HigueraAzureFunction
+npm install
+```
+
+### 2. Run Next.js front end
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Open your browser at `http://localhost:3000/dashboard`
+- Edit `public/data/data.json` and refresh to see updated KPIs, charts, and tables.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Run Azure Functions locally
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+cd /Users/erikherring/HigueraAzureFunction
+func host start
+```
 
-## Learn More
+- Functions are available at `http://localhost:7071/api/exportExcel` and `/api/sendEmail`.
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Generate Excel report manually
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run generate-excel
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Reads `public/data/data.json` and writes `test_excel_export.xlsx` to the project root.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Editing Data
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Open `/public/data/data.json`
+2. Update fields under:
+   - `kpis` (budget, spent, remaining)
+   - `hoursTracking` (dates, weekly data)
+   - `schedule` (task completion)
+   - `issues`, `recentUpdates`
+3. Save and refresh the dashboard or rerun the Excel script.
+
+---
+
+## Deployment
+
+1. Commit your changes:
+   ```bash
+git add . && git commit -m "Update dashboard data or code"
+```
+2. Run your CI/CD pipeline or deploy with Azure Developer CLI:
+   ```bash
+azd up          # provisions infra & deploys functions + static site
+```
+
+---
+
+## Troubleshooting
+
+- **Missing modules in Functions**: Reinstall dependencies and restart the host:
+  ```bash
+npm install
+func host start
+```
+- **Build errors** in Next.js: Remove unsupported `experimental.appDir` in `next.config.js`.
+
+---
+
+For any questions, contact the engineering team or refer to the internal wiki.
