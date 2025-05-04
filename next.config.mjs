@@ -1,8 +1,8 @@
 import createNextIntlPlugin from "next-intl/plugin";
+import nextIntlConfig from "./next-intl.config.mjs";
 
 /** @type {import('next').NextConfig} */
-
-const withNextIntl = createNextIntlPlugin();
+const withNextIntl = createNextIntlPlugin(nextIntlConfig);
 
 const nextConfig = {
   images: {

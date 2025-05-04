@@ -1,24 +1,19 @@
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "version": "0.4.0",
-  "name": "HigueraAzureFunction",
-  "resources": {
-    "infra": {
-      "path": "infra"
-    }
-  },
-  "services": {
-    "functionapp": {
-      "path": ".",
-      "host": "function",
-      "language": "js",
-      "projectFile": "package.json"
-    }
-  },
-  "deploy": {
-    "functionapp": {
-      "type": "function",
-      "resourceName": "${RESOURCE_NAME}-func"
-    }
-  }
-}
+# Azure Developer CLI configuration for HigueraAzureFunction
+schema: https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#
+version: '0.4.0'
+name: HigueraAzureFunction
+resources:
+  infra:
+    path: infra
+services:
+  functionapp:
+    path: .
+    host: function
+    language: js
+    projectFile: package.json
+    identity:
+      type: systemAssigned
+deploy:
+  functionapp:
+    type: function
+    resourceName: "${RESOURCE_NAME}-func"

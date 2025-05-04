@@ -1,6 +1,11 @@
+const createNextIntlPlugin = require('next-intl/plugin').default;
+const nextIntlConfig = require('./next-intl.config.js');
+const withNextIntl = createNextIntlPlugin(nextIntlConfig);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: { appDir: false },
+  // Enable the App Router under `/app`
+  experimental: { appDir: true },
   reactStrictMode: true,
   env: {
     AZURE_FUNCTION_URL: process.env.AZURE_FUNCTION_URL || 'http://localhost:7071',
@@ -70,4 +75,4 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
+module.exports = withNextIntl(nextConfig);

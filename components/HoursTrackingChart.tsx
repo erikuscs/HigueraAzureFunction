@@ -25,10 +25,10 @@ const HoursTrackingChart: React.FC<HoursTrackingChartProps> = ({ data }) => {
     chart: { id: 'hours-tracking', toolbar: { show: false } },
     xaxis: { categories },
     yaxis: { title: { text: 'Hours' } },
-    stroke: { curve: 'smooth' },
+    stroke: { curve: 'smooth' as const },
     colors: ['#1E40AF', '#EF4444'],
     markers: { size: 4 },
-    legend: { position: 'top' },
+    legend: { position: 'top' as const }, // Explicitly cast the type
   };
 
   const series = [

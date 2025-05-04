@@ -24,22 +24,14 @@ const config: DocsThemeConfig = {
     text: (
       <span>
         {new Date().getFullYear()} ©{" "}
-        <a href="https://codeshaper.net/" target="_blank">
+        <a href="https://codeshaper.net/" target="_blank" rel="noopener noreferrer">
           CodeShaper
         </a>
-        .
+        {" ."}
       </span>
     ),
   },
-  themeSwitch: {
-    useOptions() {
-      return {
-        light: 'Light',
-        dark: 'Dark',
-        system: 'System', // Add this line
-      };
-    },
-  },
+  darkMode: true,
   useNextSeoProps() {
     return {
       titleTemplate: "%s – Dashcode",

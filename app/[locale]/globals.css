@@ -781,3 +781,13 @@
     width: 100%;
   }
 
+  .dashcode-app
+    .react-select
+    .has-error
+    .react-select__control
+    .select__indicator
+    svg {
+    @apply text-destructive;
+  }
+}
+
