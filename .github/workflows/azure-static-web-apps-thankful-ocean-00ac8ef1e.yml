@@ -18,6 +18,7 @@ jobs:
        id-token: write
        contents: read
     steps:
+<<<<<<< HEAD
       - uses: actions/checkout@v3
         with:
           submodules: true
@@ -56,3 +57,43 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           action: "close"
+=======
+    - uses: actions/checkout@v3
+      with:
+        submodules: true # Ensure submodules are checked out if needed
+
+    - name: Setup Node.js # Corrected Step Name
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x' # Match package.json
+        cache: 'npm' # Enable npm caching
+
+    - name: Install dependencies # Corrected Step Name
+      run: npm ci
+
+    - name: Build Next.js static site # Corrected Step Name
+      run: npm run build # Modern Next.js uses build instead of export
+      # Removed empty env section - uncomment and add variables when needed
+      # env:
+      #   NEXT_PUBLIC_API_URL: ${{ secrets.API_URL }}
+
+    - name: Debug build output # Optional: Verify build output contents
+      run: |
+        echo "=== Build directory listing ==="
+        ls -la .next
+        ls -la public
+
+    - name: Deploy to Azure Static Web Apps
+      id: deploy # Added id for potential outputs
+      uses: Azure/static-web-apps-deploy@v1
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }} # Using the auto-generated secret name
+        repo_token: ${{ secrets.GITHUB_TOKEN }} # Recommended for GitHub Actions
+        action: "upload"
+        ###### Repository/Build Configurations ######
+        app_location: "/" # Root directory of your app
+        api_location: "" # API source code path - Empty if no Azure Functions API needed for this SWA
+        output_location: ".next" # The build output directory for Next.js
+        is_static_export: true # Required for Next.js static export
+        ###### End of Repository/Build Configurations ######
+>>>>>>> 9e20144daf9ce3052d26c032a018ae192a4d1527
