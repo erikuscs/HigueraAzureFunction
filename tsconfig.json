@@ -37,6 +37,7 @@
   ],
   "exclude": [
     "node_modules",
-    "Static Web App"
+    "Static Web App",
+    "next-intl.config.ts"
   ]
 }

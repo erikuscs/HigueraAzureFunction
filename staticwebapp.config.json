@@ -39,14 +39,12 @@
     ".css": "text/css"
   },
   "platform": {
-    "apiRuntime": "node:18"
-  },
-  "networking": {
-    "allowedIpRanges": ["0.0.0.0/0"]
-  },
-  "functions": {
+    "apiRuntime": "node:18",
     "api": {
       "functionAppUrl": "https://higuera-dev-func.azurewebsites.net"
     }
+  },
+  "networking": {
+    "allowedIpRanges": ["0.0.0.0/0"]
   }
 }

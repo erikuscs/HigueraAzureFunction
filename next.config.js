@@ -1,11 +1,7 @@
-const createNextIntlPlugin = require('next-intl/plugin').default;
-const nextIntlConfig = require('./next-intl.config.js');
-const withNextIntl = createNextIntlPlugin(nextIntlConfig);
+// Next-Intl plugin wrapper removed; i18n routing is handled in middleware and pages
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable the App Router under `/app`
-  experimental: { appDir: true },
   reactStrictMode: true,
   env: {
     AZURE_FUNCTION_URL: process.env.AZURE_FUNCTION_URL || 'http://localhost:7071',
@@ -75,4 +71,4 @@ const nextConfig = {
   }
 }
 
-module.exports = withNextIntl(nextConfig);
+module.exports = nextConfig;

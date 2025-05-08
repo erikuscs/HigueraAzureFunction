@@ -182,7 +182,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
   name: '${uniqueName}-swa'
   // Use the location parameter
   location: location
-  tags: union(tags, { 'azd-service-name': 'staticwebapp' }) // Add azd tag
+  tags: union(tags, { 'azd-service-name': 'web' }) // Add correct AZD tag for the web service
   sku: {
     name: 'Standard'
     tier: 'Standard'

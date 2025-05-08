@@ -8,12 +8,22 @@ resources:
 services:
   functionapp:
     path: .
+    project: exportExcel
+    dist: '.'
     host: function
     language: js
     projectFile: package.json
     identity:
       type: systemAssigned
+  web:
+    project: .
+    dist: '.next'
+    language: js
+    host: staticwebapp
 deploy:
   functionapp:
     type: function
     resourceName: "${RESOURCE_NAME}-func"
+  web:
+    type: staticWebApp
+    resourceName: "${RESOURCE_NAME}-swa"
