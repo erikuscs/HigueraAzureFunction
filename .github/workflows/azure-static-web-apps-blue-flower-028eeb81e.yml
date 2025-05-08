@@ -2,14 +2,81 @@ name: Azure Static Web Apps CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
 
 jobs:
   build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
+    name: Build and Deploy Job
+<<<<<<< HEAD
+    permissions:
+       id-token: write
+       contents: read
     steps:
+<<<<<<< HEAD
+=======
+    steps:
+>>>>>>> 37870a07575db8a9bd20b8dbe0788ae527f554be
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          lfs: false
+<<<<<<< HEAD
+      - name: Install OIDC Client from Core Package
+        run: npm install @actions/core@1.6.0 @actions/http-client
+      - name: Get Id Token
+        uses: actions/github-script@v6
+        id: idtoken
+        with:
+           script: |
+               const coredemo = require('@actions/core')
+               return await coredemo.getIDToken()
+           result-encoding: string
+=======
+>>>>>>> 37870a07575db8a9bd20b8dbe0788ae527f554be
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+<<<<<<< HEAD
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_OCEAN_00AC8EF1E }}
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "/" # App source code path
+          api_location: "/" # Api source code path - optional
+          output_location: "" # Built app content directory - optional
+          github_id_token: ${{ steps.idtoken.outputs.result }}
+=======
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BLUE_FLOWER_028EEB81E }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "./Static Web App" # App source code path
+          api_location: "./Static Web App" # Api source code path - optional
+          output_location: "build" # Built app content directory - optional
+>>>>>>> 37870a07575db8a9bd20b8dbe0788ae527f554be
+          ###### End of Repository/Build Configurations ######
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+<<<<<<< HEAD
+          action: "close"
+=======
     - uses: actions/checkout@v3
       with:
         submodules: true # Ensure submodules are checked out if needed
@@ -48,3 +115,8 @@ jobs:
         output_location: ".next" # The build output directory for Next.js
         is_static_export: true # Required for Next.js static export
         ###### End of Repository/Build Configurations ######
+>>>>>>> 9e20144daf9ce3052d26c032a018ae192a4d1527
+=======
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BLUE_FLOWER_028EEB81E }}
+          action: "close"
+>>>>>>> 37870a07575db8a9bd20b8dbe0788ae527f554be

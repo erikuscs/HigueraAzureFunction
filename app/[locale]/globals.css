@@ -1,96 +1,6 @@
-@import "tailwindcss";
-
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --color-border: hsl(var(--border));
-  --color-menu-arrow: hsl(var(--menu-arrow));
-  --color-menu-arrow-active: hsl(var(--menu-arrow-active));
-  --color-menu-menu-foreground: hsl(var(--menu-foreground));
-
-  --color-default-50: hsl(var(--default-50));
-  --color-default-100: hsl(var(--default-100));
-  --color-default-200: hsl(var(--default-200));
-  --color-default-300: hsl(var(--default-300));
-  --color-default-400: hsl(var(--default-400));
-  --color-default-500: hsl(var(--default-500));
-  --color-default-600: hsl(var(--default-600));
-  --color-default-700: hsl(var(--default-700));
-  --color-default-800: hsl(var(--default-800));
-  --color-default-900: hsl(var(--default-900));
-  --color-default-950: hsl(var(--default-950));
-  --color-default: hsl(var(--default));
-  --color-default-foreground: hsl(var(--default-foreground));
-
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-
-  --color-primary-50: hsl(var(--primary-50));
-  --color-primary-100: hsl(var(--primary-100));
-  --color-primary-200: hsl(var(--primary-200));
-  --color-primary-300: hsl(var(--primary-300));
-  --color-primary-400: hsl(var(--primary-400));
-  --color-primary-500: hsl(var(--primary-500));
-  --color-primary-600: hsl(var(--primary-600));
-  --color-primary-700: hsl(var(--primary-700));
-  --color-primary-800: hsl(var(--primary-800));
-  --color-primary-900: hsl(var(--primary-900));
-  --color-primary-950: hsl(var(--primary-950));
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-
-  --color-sidebar: hsl(var(--sidebar));
-
-  --color-header: hsl(var(--header));
-
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-
-  --color-success: hsl(var(--success));
-  --color-success-foreground: hsl(var(--success-foreground));
-
-  --color-info: hsl(var(--info));
-  --color-info-foreground: hsl(var(--info-foreground));
-
-  --color-warning: hsl(var(--warning));
-  --color-warning-foreground: hsl(var(--warning-foreground));
-
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
-
-  --shadow-base: 0px 0px 1px rgba(40, 41, 61, 0.08),
-    0px 0.5px 2px rgba(96, 97, 112, 0.16);
-  --shadow-base2: 0px 2px 4px rgba(40, 41, 61, 0.04),
-    0px 8px 16px rgba(96, 97, 112, 0.16);
-  --shadow-base3: 16px 10px 40px rgba(15, 23, 42, 0.22);
-  --shadow-deep: -2px 0px 8px rgba(0, 0, 0, 0.16);
-  --shadow-dropdown: 0px 4px 8px rgba(0, 0, 0, 0.08);
-  --shadow-testi: 0px 4px 24px rgba(0, 0, 0, 0.06);
-  --shadow-todo: rgba(235 233 241, 0.6) 0px 3px 10px 0px;
-
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
-  --animate-zoom: zoom 1s ease-in-out infinite;
-  --animate-tada: tada 1.5s ease-in-out infinite;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   :root {
@@ -373,420 +283,427 @@
   }
 }
 
-
-
-
-  /* vector map */
-  .dashcode-app-vmap path {
-    @apply fill-[#6794DC];
-  }
-
-  .dashcode-app-vmap .svg-map__location[aria-checked="true"] {
-    @apply fill-primary;
-  }
-
-  .dashcode-app-codeVmapInfo path {
-    @apply fill-info;
-  }
-
-  .dashcode-app-codeVmapInfo path .svg-map__location[aria-checked="true"] {
-    @apply fill-info;
-  }
-  .dashcode-app-codeVmapWarning path {
-    @apply fill-warning;
-  }
-  .dashcode-app-codeVmapWarning path .svg-map__location[aria-checked="true"] {
-    @apply fill-warning;
-  }
-  .dashcode-app-codeVmapSuccess path {
-    @apply fill-success;
-  }
-  .dashcode-app-codeVmapSuccess path .svg-map__location[aria-checked="true"] {
-    @apply fill-success;
-  }
-  .input-group :not(:first-child) input {
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
-  }
-
-  .input-group.merged :not(:first-child) input {
-    border-left-width: 0 !important;
-    padding-left: 0px !important;
-  }
-
-  .input-group :not(:last-child) input {
-    border-top-right-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-  }
-
-  .input-group.merged :not(:last-child) input {
-    border-right: 0px !important;
-    padding-right: 0px !important;
-  }
-
-  .no-scrollbar::-webkit-scrollbar {
-    width: 0px;
-  }
-
-  .no-scrollbar::-webkit-scrollbar-thumb {
-    background-color: transparent;
-  }
-
-  .logo-box-3 {
-    @apply flex justify-center items-center min-h-screen;
-  }
-
-  .v3-right-column {
-    @apply flex flex-col items-center justify-center;
-  }
-
-  .has-sticky-header::after {
-    position: absolute;
-    z-index: -10;
-    --tw-backdrop-blur: blur(12px);
-    backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
-      var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
-      var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
-      var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
-      var(--tw-backdrop-sepia);
-    --tw-content: "";
-    content: var(--tw-content);
-    background: linear-gradient(
-      180deg,
-      rgba(var(--v-theme-background)) 44%,
-      rgba(var(--v-theme-background)) 73%,
-      rgba(var(--v-theme-background))
-    );
-    background-repeat: repeat;
-    block-size: 5.5rem;
-    inset-block-start: -2.5rem;
-    inset-inline-end: 0;
-    inset-inline-start: 0;
-    -webkit-mask: linear-gradient(black, black 18%, transparent 100%);
-    mask: linear-gradient(black, black 18%, transparent 100%);
-  }
-  .has-sticky-footer::after {
-    position: absolute;
-    z-index: -10;
-    --tw-backdrop-blur: blur(12px);
-    backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
-      var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
-      var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
-      var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
-      var(--tw-backdrop-sepia);
-    --tw-content: "";
-    content: var(--tw-content);
-    background: linear-gradient(
-      180deg,
-      rgba(var(--v-theme-background)) 44%,
-      rgba(var(--v-theme-background)) 73%,
-      rgba(var(--v-theme-background))
-    );
-    background-repeat: repeat;
-    block-size: 5.5rem;
-    inset-block-start: 1.5rem;
-    inset-inline-end: 0;
-    inset-inline-start: 0;
-    -webkit-mask: linear-gradient(black, black 18%, transparent 100%);
-    mask: linear-gradient(black, black 18%, transparent 100%);
-  }
-
-  .app-height {
-    height: calc(var(--vh, 1vh) * 100 - 10.1rem);
-  }
-
-  /* calendar */
-  .dashcode-app-calendar .fc-toolbar-chunk button {
-    @apply h-12 px-5;
-  }
-
-  .dashcode-app-calendar .fc-toolbar-chunk button.fc-prev-button {
-    @apply text-default-600;
-  }
-
-  .dashcode-app-calendar .fc-toolbar-chunk button.fc-next-button {
-    @apply text-default-600;
-  }
-
-  .dashcode-app-calendar .fc-button {
-    @apply h-12 px-5;
-  }
-
-  .dashcode-app-calendar .fc .fc-button-primary {
-    @apply bg-transparent hover:bg-primary border border-default-200 dark:border-default-300 dark:hover:bg-default-50 dark:hover:text-foreground text-default-700 capitalize;
-  }
-
-  .dashcode-app-calendar .fc .fc-button-primary.fc-button-active {
-    @apply border-none;
-  }
-
-  .dashcode-app-calendar .fc .fc-button-primary:not(:disabled):active,
-  .dashcode-app-calendar .fc .fc-button-primary:not(:disabled).fc-button-active,
-  .dashcode-app-calendar .fc .fc-button-primary:hover {
-    @apply bg-default text-default-foreground dark:bg-default-50 dark:text-foreground;
-  }
-
-  .dashcode-app-calendar .fc .fc-button-primary:disabled {
-    @apply bg-transparent border border-default-200 cursor-not-allowed hover:text-default-800;
-  }
-
-  .dashcode-app-calendar .fc-today-button {
-    @apply hover:text-primary-foreground;
-  }
-
-  .dashcode-app-calendar .fc .fc-button-primary:focus {
-    box-shadow: none !important;
-  }
-
-  .dashcode-app-calendar .fc-theme-standard .fc-scrollgrid {
-    @apply border-default-100 dark:border-default-300;
-  }
-
-  .dashcode-app-calendar .fc-theme-standard td,
-  .dashcode-app-calendar .fc-theme-standard th {
-    @apply border-default-100 dark:border-default-300;
-  }
-
-  .dashcode-app-calendar .fc-col-header-cell .fc-scrollgrid-sync-inner {
-    @apply bg-default-50 dark:bg-default-300 text-xs text-default-600 font-normal py-3;
-  }
-
-  .dashcode-app-calendar .fc-col-header-cell {
-    @apply border-none;
-  }
-
-  .dashcode-app-calendar .fc-daygrid-day-top {
-    @apply text-sm px-3 py-2 text-default-900 font-normal;
-  }
-
-  .dashcode-app-calendar .fc-h-event .fc-event-main-frame {
-    @apply flex justify-center items-center text-center w-max mx-auto;
-  }
-
-  .dashcode-app-calendar .fc-event-time {
-    @apply text-sm font-normal flex-none text-primary-foreground;
-  }
-
-  .dashcode-app-calendar .fc-timegrid-event .fc-event-main {
-    @apply p-0 flex justify-center items-center gap-1;
-  }
-
-  .dashcode-app-calendar .fc-event-title {
-    @apply text-sm font-light;
-  }
-
-  .dashcode-app-calendar .fc-timegrid-col-events .fc-event-title {
-    @apply pt-4;
-  }
-
-  .dashcode-app-calendar .fc .fc-toolbar-title {
-    @apply text-lg font-normal text-default-600;
-  }
-
-  .dashcode-app .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
-    @apply p-1;
-  }
-
-  .dashcode-app-calendar .fc-theme-standard .fc-list {
-    @apply border border-default-200;
-  }
-
-  .dashcode-app-calendar .fc-daygrid-event-dot {
-    @apply hidden;
-  }
-
-  .dashcode-app-calendar .fc .fc-list-sticky .fc-list-day > * {
-    @apply bg-default-50;
-  }
-
-  .dashcode-app-calendar .fc-timegrid-col-events .fc-event-title {
-    @apply pt-0;
-  }
-
-  .dashcode-app-calendar .fc-timegrid-event-harness > .fc-timegrid-event {
-    @apply static;
-  }
-
-  @media (max-width: 981px) {
-    .dashcode-app-calendar .fc-button-group,
-    .dashcode-app-calendar .fc .fc-toolbar {
-      display: block !important;
-    }
-
-    .dashcode-app-calendar .fc .fc-toolbar {
-      @apply space-y-4;
-    }
-
-    .dashcode-app-calendar .fc-toolbar-chunk {
-      @apply space-y-4;
-    }
-
-    .dashcode-app-calendar .fc .fc-button {
-      padding: 0.4em 0.65em !important;
-    }
-  }
-
-  .dashcode-app-calendar .fc .fc-timegrid-axis-cushion,
-  .dashcode-app-calendar .fc .fc-timegrid-slot-label-cushion {
-    @apply dark:text-default-300;
-  }
-
-  .dashcode-app-calendar .fc .fc-list-event:hover td {
-    @apply bg-inherit;
-  }
-
-  .dashcode-app-calendar .fc .fc-list-event-dot {
-    @apply hidden;
-  }
-
-  .dashcode-app-calendar .fc-direction-ltr .fc-list-day-text,
-  .dashcode-app-calendar .fc-direction-rtl .fc-list-day-side-text,
-  .dashcode-app-calendar .fc-direction-ltr .fc-list-day-side-text,
-  .dashcode-app-calendar .fc-direction-rtl .fc-list-day-text {
-    @apply text-base font-medium text-default-600;
-  }
-
-  .dashcode-app-calendar .primary {
-    @apply bg-primary border-none text-primary-foreground text-center px-2 font-medium text-sm;
-  }
-
-  .dashcode-app-calendar .secondary {
-    @apply bg-secondary border-none text-primary-foreground text-center px-2 font-medium text-sm;
-  }
-
-  .dashcode-app-calendar .danger {
-    @apply bg-destructive border-none text-primary-foreground text-center px-2 font-medium text-sm;
-  }
-
-  .dashcode-app-calendar .destructive {
-    @apply bg-destructive border-none text-primary-foreground text-center px-2 font-medium text-sm;
-  }
-
-  .dashcode-app-calendar .info {
-    @apply bg-info border-none text-primary-foreground text-center px-2 font-medium text-sm;
-  }
-
-  .dashcode-app-calendar .warning {
-    @apply bg-warning border-none text-primary-foreground text-center px-2 font-medium text-sm;
-  }
-
-  .dashcode-app-calendar .success {
-    @apply bg-success border-none text-primary-foreground text-center px-2 font-medium text-sm;
-  }
-
-  .dashcode-app-calendar .dark {
-    @apply bg-card-foreground border-none text-primary-foreground px-2 font-medium text-sm;
-  }
-
-  /* react select */
-
-  .dashcode-app .react-select .react-select.is-invalid .select__control {
-    border-color: none !important;
-  }
-
-  .dashcode-app .react-select .select__control {
-    @apply bg-background min-h-8 border border-default-200 focus:border-default;
-  }
-
-  .dashcode-app .react-select .select__single-value {
-    @apply text-sm font-medium text-default-800;
-  }
-
-  .dashcode-app .react-select .select__menu {
-    @apply bg-background;
-  }
-
-  .dashcode-app .react-select .select__placeholder {
-    @apply text-default-500;
-  }
-
-  .dashcode-app .react-select .select__menu .select__option {
-    @apply hover:bg-default/10;
-  }
-
-  .dashcode-app
-    .react-select
-    .select__menu
-    .select__option.select__option--is-selected {
-    @apply bg-default dark:bg-default-200;
-  }
-
-  .dashcode-app .react-select.is-invalid .select__control {
-    border-color: none !important;
-  }
-
-  .dashcode-app .react-select .has-error .select__control {
-    @apply border-destructive;
-  }
-
-  .dashcode-app .react-select .react-select__control .select__input {
-    @apply text-default-500;
-  }
-
-  .dashcode-app
-    .react-select
-    .react-select__control.select__control--is-disabled {
-    @apply cursor-not-allowed;
-  }
-
-  .dashcode-app
-    .react-select
-    .react-select__control
-    .select__indicator-separator {
-    @apply bg-default-50 text-default-800 placeholder:italic;
-  }
-
-  .dashcode-app .react-select .react-select__control .select__indicator svg {
-    @apply cursor-pointer text-default-600;
-  }
-
-  .dashcode-app
-    .react-select
-    .has-error
-    .react-select__control
-    .select__indicator
-    svg {
-    @apply text-destructive;
-  }
-
-  .dashcode-app .react-select .select__multi-value__label {
-    @apply text-xs bg-default  text-default-foreground rounded-none ltr:rounded-l rtl:rounded-r;
-  }
-
-  .dashcode-app .react-select .select__multi-value__remove {
-    @apply bg-default rounded-none ltr:rounded-r rtl:rounded-l;
-  }
-
-  .dashcode-app .react-select .select__multi-value__remove svg {
-    @apply fill-default-foreground;
-  }
-
-  html[dir="rtl"] .react-select .select__loading-indicator {
-    flex-direction: row-reverse;
-  }
-
-  /* quil editor */
-  .ql-container {
-    min-height: 9rem;
-    height: 100%;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .ql-editor {
-    height: 100%;
-    flex: 1;
-    overflow-y: auto;
-    width: 100%;
-  }
-
-  .dashcode-app
-    .react-select
-    .has-error
-    .react-select__control
-    .select__indicator
-    svg {
-    @apply text-destructive;
-  }
+/* vector map */
+.dashcode-app-vmap path {
+  @apply fill-[#6794DC];
+}
+
+.dashcode-app-vmap .svg-map__location[aria-checked="true"] {
+  @apply fill-primary;
+}
+
+.dashcode-app-codeVmapInfo path {
+  @apply fill-info;
+}
+
+.dashcode-app-codeVmapInfo path .svg-map__location[aria-checked="true"] {
+  @apply fill-info;
+}
+.dashcode-app-codeVmapWarning path {
+  @apply fill-warning;
+}
+.dashcode-app-codeVmapWarning path .svg-map__location[aria-checked="true"] {
+  @apply fill-warning;
+}
+.dashcode-app-codeVmapSuccess path {
+  @apply fill-success;
+}
+.dashcode-app-codeVmapSuccess path .svg-map__location[aria-checked="true"] {
+  @apply fill-success;
+}
+.input-group :not(:first-child) input {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.input-group.merged :not(:first-child) input {
+  border-left-width: 0 !important;
+  padding-left: 0px !important;
+}
+
+.input-group :not(:last-child) input {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.input-group.merged :not(:last-child) input {
+  border-right: 0px !important;
+  padding-right: 0px !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  width: 0px;
+}
+
+.no-scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.logo-box-3 {
+  @apply flex justify-center items-center min-h-screen;
+}
+
+.v3-right-column {
+  @apply flex flex-col items-center justify-center;
+}
+
+.has-sticky-header::after {
+  position: absolute;
+  z-index: -10;
+  --tw-backdrop-blur: blur(12px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
+    var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
+    var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+    var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
+    var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
+    var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
+    var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+    var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
+    var(--tw-backdrop-sepia);
+  --tw-content: "";
+  content: var(--tw-content);
+  background: linear-gradient(
+    180deg,
+    rgba(var(--v-theme-background)) 44%,
+    rgba(var(--v-theme-background)) 73%,
+    rgba(var(--v-theme-background))
+  );
+  background-repeat: repeat;
+  block-size: 5.5rem;
+  inset-block-start: -2.5rem;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
+  -webkit-mask: linear-gradient(black, black 18%, transparent 100%);
+  mask: linear-gradient(black, black 18%, transparent 100%);
+}
+.has-sticky-footer::after {
+  position: absolute;
+  z-index: -10;
+  --tw-backdrop-blur: blur(12px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
+    var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
+    var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+    var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
+    var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
+    var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
+    var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+    var(--tw-backdrop-opacity) var (--tw-backdrop-saturate)
+    var(--tw-backdrop-sepia);
+  --tw-content: "";
+  content: var(--tw-content);
+  background: linear-gradient(
+    180deg,
+    rgba(var(--v-theme-background)) 44%,
+    rgba(var(--v-theme-background)) 73%,
+    rgba(var(--v-theme-background))
+  );
+  background-repeat: repeat;
+  block-size: 5.5rem;
+  inset-block-start: 1.5rem;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
+  -webkit-mask: linear-gradient(black, black 18%, transparent 100%);
+  mask: linear-gradient(black, black 18%, transparent 100%);
+}
+
+.app-height {
+  height: calc(var(--vh, 1vh) * 100 - 10.1rem);
+}
+
+/* calendar */
+.dashcode-app-calendar .fc-toolbar-chunk button {
+  @apply h-12 px-5;
+}
+
+.dashcode-app-calendar .fc-toolbar-chunk button.fc-prev-button {
+  @apply text-default-600;
+}
+
+.dashcode-app-calendar .fc-toolbar-chunk button.fc-next-button {
+  @apply text-default-600;
+}
+
+.dashcode-app-calendar .fc-button {
+  @apply h-12 px-5;
+}
+
+.dashcode-app-calendar .fc .fc-button-primary {
+  @apply bg-transparent hover:bg-primary border border-default-200 dark:border-default-300 dark:hover:bg-default-50 dark:hover:text-foreground text-default-700 capitalize;
+}
+
+.dashcode-app-calendar .fc .fc-button-primary.fc-button-active {
+  @apply border-none;
+}
+
+.dashcode-app-calendar .fc .fc-button-primary:not(:disabled):active,
+.dashcode-app-calendar .fc .fc-button-primary:not(:disabled).fc-button-active,
+.dashcode-app-calendar .fc .fc-button-primary:hover {
+  @apply bg-default text-default-foreground dark:bg-default-50 dark:text-foreground;
+}
+
+.dashcode-app-calendar .fc .fc-button-primary:disabled {
+  @apply bg-transparent border border-default-200 cursor-not-allowed hover:text-default-800;
+}
+
+.dashcode-app-calendar .fc-today-button {
+  @apply hover:text-primary-foreground;
+}
+
+.dashcode-app-calendar .fc .fc-button-primary:focus {
+  box-shadow: none !important;
+}
+
+.dashcode-app-calendar .fc-theme-standard .fc-scrollgrid {
+  @apply border-default-100 dark:border-default-300;
+}
+
+.dashcode-app-calendar .fc-theme-standard td,
+.dashcode-app-calendar .fc-theme-standard th {
+  @apply border-default-100 dark:border-default-300;
+}
+
+.dashcode-app-calendar .fc-col-header-cell .fc-scrollgrid-sync-inner {
+  @apply bg-default-50 dark:bg-default-300 text-xs text-default-600 font-normal py-3;
+}
+
+.dashcode-app-calendar .fc-col-header-cell {
+  @apply border-none;
+}
+
+.dashcode-app-calendar .fc-daygrid-day-top {
+  @apply text-sm px-3 py-2 text-default-900 font-normal;
+}
+
+.dashcode-app-calendar .fc-h-event .fc-event-main-frame {
+  @apply flex justify-center items-center text-center w-max mx-auto;
+}
+
+.dashcode-app-calendar .fc-event-time {
+  @apply text-sm font-normal flex-none text-primary-foreground;
+}
+
+.dashcode-app-calendar .fc-timegrid-event .fc-event-main {
+  @apply p-0 flex justify-center items-center gap-1;
+}
+
+.dashcode-app-calendar .fc-event-title {
+  @apply text-sm font-light;
+}
+
+.dashcode-app-calendar .fc-timegrid-col-events .fc-event-title {
+  @apply pt-4;
+}
+
+.dashcode-app-calendar .fc .fc-toolbar-title {
+  @apply text-lg font-normal text-default-600;
+}
+
+.dashcode-app .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+  @apply p-1;
+}
+
+.dashcode-app-calendar .fc-theme-standard .fc-list {
+  @apply border border-default-200;
+}
+
+.dashcode-app-calendar .fc-daygrid-event-dot {
+  @apply hidden;
+}
+
+.dashcode-app-calendar .fc .fc-list-sticky .fc-list-day > * {
+  @apply bg-default-50;
+}
+
+.dashcode-app-calendar .fc-timegrid-col-events .fc-event-title {
+  @apply pt-0;
+}
+
+.dashcode-app-calendar .fc-timegrid-event-harness > .fc-timegrid-event {
+  @apply static;
+}
+
+@media (max-width: 981px) {
+  .dashcode-app-calendar .fc-button-group,
+  .dashcode-app-calendar .fc .fc-toolbar {
+    display: block !important;
+  }
+
+  .dashcode-app-calendar .fc .fc-toolbar {
+    @apply space-y-4;
+  }
+
+  .dashcode-app-calendar .fc-toolbar-chunk {
+    @apply space-y-4;
+  }
+
+  .dashcode-app-calendar .fc .fc-button {
+    padding: 0.4em 0.65em !important;
+  }
+}
+
+.dashcode-app-calendar .fc .fc-timegrid-axis-cushion,
+.dashcode-app-calendar .fc .fc-timegrid-slot-label-cushion {
+  @apply dark:text-default-300;
+}
+
+.dashcode-app-calendar .fc .fc-list-event:hover td {
+  @apply bg-inherit;
+}
+
+.dashcode-app-calendar .fc .fc-list-event-dot {
+  @apply hidden;
+}
+
+.dashcode-app-calendar .fc-direction-ltr .fc-list-day-text,
+.dashcode-app-calendar .fc-direction-rtl .fc-list-day-side-text,
+.dashcode-app-calendar .fc-direction-ltr .fc-list-day-side-text,
+.dashcode-app-calendar .fc-direction-rtl .fc-list-day-text {
+  @apply text-base font-medium text-default-600;
+}
+
+.dashcode-app-calendar .primary {
+  @apply bg-primary border-none text-primary-foreground text-center px-2 font-medium text-sm;
+}
+
+.dashcode-app-calendar .secondary {
+  @apply bg-secondary border-none text-primary-foreground text-center px-2 font-medium text-sm;
+}
+
+.dashcode-app-calendar .danger {
+  @apply bg-destructive border-none text-primary-foreground text-center px-2 font-medium text-sm;
+}
+
+.dashcode-app-calendar .destructive {
+  @apply bg-destructive border-none text-primary-foreground text-center px-2 font-medium text-sm;
+}
+
+.dashcode-app-calendar .info {
+  @apply bg-info border-none text-primary-foreground text-center px-2 font-medium text-sm;
+}
+
+.dashcode-app-calendar .warning {
+  @apply bg-warning border-none text-primary-foreground text-center px-2 font-medium text-sm;
+}
+
+.dashcode-app-calendar .success {
+  @apply bg-success border-none text-primary-foreground text-center px-2 font-medium text-sm;
+}
+
+.dashcode-app-calendar .dark {
+  @apply bg-card-foreground border-none text-primary-foreground px-2 font-medium text-sm;
+}
+
+/* react select */
+
+.dashcode-app .react-select .react-select.is-invalid .select__control {
+  border-color: none !important;
+}
+
+.dashcode-app .react-select .select__control {
+  @apply bg-background min-h-8 border border-default-200 focus:border-default;
+}
+
+.dashcode-app .react-select .select__single-value {
+  @apply text-sm font-medium text-default-800;
+}
+
+.dashcode-app .react-select .select__menu {
+  @apply bg-background;
+}
+
+.dashcode-app .react-select .select__placeholder {
+  @apply text-default-500;
+}
+
+.dashcode-app .react-select .select__menu .select__option {
+  @apply hover:bg-default/10;
+}
+
+.dashcode-app
+  .react-select
+  .select__menu
+  .select__option.select__option--is-selected {
+  @apply bg-default dark:bg-default-200;
+}
+
+.dashcode-app .react-select.is-invalid .select__control {
+  border-color: none !important;
+}
+
+.dashcode-app .react-select .has-error .select__control {
+  @apply border-destructive;
+}
+
+.dashcode-app .react-select .react-select__control .select__input {
+  @apply text-default-500;
+}
+
+.dashcode-app
+  .react-select
+  .react-select__control.select__control--is-disabled {
+  @apply cursor-not-allowed;
+}
+
+.dashcode-app
+  .react-select
+  .react-select__control
+  .select__indicator-separator {
+  @apply bg-default-50 text-default-800 placeholder:italic;
+}
+
+.dashcode-app .react-select .react-select__control .select__indicator svg {
+  @apply cursor-pointer text-default-600;
+}
+
+.dashcode-app
+  .react-select
+  .has-error
+  .react-select__control
+  .select__indicator
+  svg {
+  @apply text-destructive;
+}
+
+.dashcode-app .react-select .select__multi-value__label {
+  @apply text-xs bg-default  text-default-foreground rounded-none ltr:rounded-l rtl:rounded-r;
+}
+
+.dashcode-app .react-select .select__multi-value__remove {
+  @apply bg-default rounded-none ltr:rounded-r rtl:rounded-l;
+}
+
+.dashcode-app .react-select .select__multi-value__remove svg {
+  @apply fill-default-foreground;
+}
+
+html[dir="rtl"] .react-select .select__loading-indicator {
+  flex-direction: row-reverse;
+}
+
+/* quil editor */
+.ql-container {
+  min-height: 9rem;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ql-editor {
+  height: 100%;
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.dashcode-app
+  .react-select
+  .has-error
+  .react-select__control
+  .select__indicator
+  svg {
+  @apply text-destructive;
+}
 

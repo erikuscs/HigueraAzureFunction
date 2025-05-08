@@ -1,15 +1,14 @@
 {
   "/_app": "pages/_app.js",
-  "/ExecutiveSummary": "pages/ExecutiveSummary.html",
+  "/_error": "pages/_error.js",
+  "/ExecutiveSummary": "pages/ExecutiveSummary.js",
   "/api/dashboardData": "pages/api/dashboardData.js",
-  "/api/generatePdf": "pages/api/generatePdf.js",
   "/api/exportExcel": "pages/api/exportExcel.js",
   "/api/logWorkerHours": "pages/api/logWorkerHours.js",
   "/api/sendEmail": "pages/api/sendEmail.js",
   "/api/updateTask": "pages/api/updateTask.js",
-  "/": "pages/index.html",
-  "/_error": "pages/_error.js",
+  "/api/generatePdf": "pages/api/generatePdf.js",
   "/dashboard": "pages/dashboard.js",
-  "/_document": "pages/_document.js",
-  "/404": "pages/404.html"
+  "/": "pages/index.js",
+  "/_document": "pages/_document.js"
 }
