@@ -24,6 +24,7 @@ on:
     branches: ["main"]
 
 permissions:
+  id-token: write  # enable GitHub OIDC
   contents: read
 
 env:
@@ -45,7 +46,7 @@ jobs:
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_RBAC_CREDENTIALS }}  # JSON with clientId, clientSecret, tenantId, subscriptionId
+        auth-type: oidc   # use GitHub OIDC for authentication
 
     - name: 'Docker Login'
       uses: azure/docker-login@v1
