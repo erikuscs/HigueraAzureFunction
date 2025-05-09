@@ -1,0 +1,4162 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "Redis_higuera_dev_redis_name": {
+      "type": "String"
+    },
+    "actionGroups_Application_Insights_Smart_Detection_name": {
+      "type": "String"
+    },
+    "components_higuera_dev_ai_externalid": {
+      "type": "String"
+    },
+    "components_higuera_dev_func_name": {
+      "type": "String"
+    },
+    "components_higuera_func_name": {
+      "type": "String"
+    },
+    "dashboards_cea5baae_d4a0_4a13_8ae5_bb86c5cee51b_dashboard_name": {
+      "type": "String"
+    },
+    "serverfarms_higuera_dev_plan_name": {
+      "type": "String"
+    },
+    "service_Higuera_name": {
+      "type": "String"
+    },
+    "sites_app_api_yuhr3xnfhbqzm_externalid": {
+      "type": "String"
+    },
+    "sites_higuera_dev_func_name": {
+      "type": "String"
+    },
+    "staticSites_higuera_dashboard_name": {
+      "type": "String"
+    },
+    "storageAccounts_higueradevst_name": {
+      "type": "String"
+    },
+    "storageAccounts_higuerafuncstorage_name": {
+      "type": "String"
+    },
+    "subscriptions_681d2767ea97b30073070001_displayName": {
+      "type": "SecureString"
+    },
+    "subscriptions_681d2768ea97b30073070002_displayName": {
+      "type": "SecureString"
+    },
+    "userAssignedIdentities_higuera_admin_name": {
+      "type": "String"
+    },
+    "users_1_lastName": {
+      "type": "SecureString"
+    },
+    "vaults_higuera_dev_kv_name": {
+      "type": "String"
+    },
+    "workspaces_DefaultWorkspace_6b32cdbb_e9cf_4d8d_8293_8b37d7a7ad9c_EUS_externalid": {
+      "type": "String"
+    },
+    "workspaces_DefaultWorkspace_6b32cdbb_e9cf_4d8d_8293_8b37d7a7ad9c_WUS2_externalid": {
+      "type": "String"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2024-06-01-preview",
+      "location": "West US 2",
+      "name": "[parameters('service_Higuera_name')]",
+      "properties": {
+        "apiVersionConstraint": {},
+        "customProperties": {
+          "Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2": "False",
+          "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Ssl30": "False",
+          "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10": "False",
+          "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11": "False",
+          "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168": "False",
+          "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Ssl30": "False",
+          "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10": "False",
+          "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11": "False"
+        },
+        "developerPortalStatus": "Enabled",
+        "disableGateway": false,
+        "hostnameConfigurations": [
+          {
+            "certificateSource": "BuiltIn",
+            "defaultSslBinding": true,
+            "hostName": "higuera.azure-api.net",
+            "negotiateClientCertificate": false,
+            "type": "Proxy"
+          }
+        ],
+        "legacyPortalStatus": "Disabled",
+        "natGatewayState": "Unsupported",
+        "notificationSenderEmail": "apimgmt-noreply@mail.windowsazure.com",
+        "publicNetworkAccess": "Enabled",
+        "publisherEmail": "erik.herring@sustanablegaps.com",
+        "publisherName": "[concat('Project ', parameters('service_Higuera_name'))]",
+        "releaseChannel": "Default",
+        "virtualNetworkType": "None"
+      },
+      "sku": {
+        "capacity": 1,
+        "name": "Developer"
+      },
+      "type": "Microsoft.ApiManagement/service"
+    },
+    {
+      "apiVersion": "2024-11-01",
+      "location": "East US 2",
+      "name": "[parameters('Redis_higuera_dev_redis_name')]",
+      "properties": {
+        "disableAccessKeyAuthentication": false,
+        "enableNonSslPort": false,
+        "minimumTlsVersion": "1.2",
+        "publicNetworkAccess": "Enabled",
+        "redisConfiguration": {
+          "maxclients": "1000",
+          "maxfragmentationmemory-reserved": "125",
+          "maxmemory-delta": "125",
+          "maxmemory-policy": "volatile-lru",
+          "maxmemory-reserved": "125"
+        },
+        "redisVersion": "6.0",
+        "sku": {
+          "capacity": 1,
+          "family": "C",
+          "name": "Standard"
+        },
+        "updateChannel": "Stable",
+        "zonalAllocationPolicy": "NoZones"
+      },
+      "tags": {
+        "environment": "dev",
+        "project": "higuera"
+      },
+      "type": "Microsoft.Cache/Redis"
+    },
+    {
+      "apiVersion": "2024-10-01-preview",
+      "location": "Global",
+      "name": "[parameters('actionGroups_Application_Insights_Smart_Detection_name')]",
+      "properties": {
+        "armRoleReceivers": [
+          {
+            "name": "Monitoring Contributor",
+            "roleId": "749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+            "useCommonAlertSchema": true
+          },
+          {
+            "name": "Monitoring Reader",
+            "roleId": "43d0d8ad-25c7-4714-9337-8ba259a9fe05",
+            "useCommonAlertSchema": true
+          }
+        ],
+        "automationRunbookReceivers": [],
+        "azureAppPushReceivers": [],
+        "azureFunctionReceivers": [],
+        "emailReceivers": [],
+        "enabled": true,
+        "eventHubReceivers": [],
+        "groupShortName": "SmartDetect",
+        "itsmReceivers": [],
+        "logicAppReceivers": [],
+        "smsReceivers": [],
+        "voiceReceivers": [],
+        "webhookReceivers": []
+      },
+      "type": "microsoft.insights/actionGroups"
+    },
+    {
+      "apiVersion": "2020-02-02",
+      "kind": "web",
+      "location": "westus2",
+      "name": "[parameters('components_higuera_dev_func_name')]",
+      "properties": {
+        "Application_Type": "web",
+        "Flow_Type": "Redfield",
+        "IngestionMode": "LogAnalytics",
+        "Request_Source": "IbizaAIExtensionEnablementBlade",
+        "RetentionInDays": 90,
+        "WorkspaceResourceId": "[parameters('workspaces_DefaultWorkspace_6b32cdbb_e9cf_4d8d_8293_8b37d7a7ad9c_WUS2_externalid')]",
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Enabled"
+      },
+      "type": "microsoft.insights/components"
+    },
+    {
+      "apiVersion": "2020-02-02",
+      "kind": "web",
+      "location": "eastus",
+      "name": "[parameters('components_higuera_func_name')]",
+      "properties": {
+        "Application_Type": "web",
+        "IngestionMode": "LogAnalytics",
+        "RetentionInDays": 90,
+        "WorkspaceResourceId": "[parameters('workspaces_DefaultWorkspace_6b32cdbb_e9cf_4d8d_8293_8b37d7a7ad9c_EUS_externalid')]",
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Enabled"
+      },
+      "type": "microsoft.insights/components"
+    },
+    {
+      "apiVersion": "2024-12-01-preview",
+      "location": "eastus2",
+      "name": "[parameters('vaults_higuera_dev_kv_name')]",
+      "properties": {
+        "accessPolicies": [],
+        "enableRbacAuthorization": true,
+        "enableSoftDelete": true,
+        "enabledForDeployment": false,
+        "enabledForTemplateDeployment": true,
+        "provisioningState": "Succeeded",
+        "publicNetworkAccess": "Enabled",
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "softDeleteRetentionInDays": 90,
+        "tenantId": "25aa65d7-8fc2-4cf5-be13-b8aa907e7f1a",
+        "vaultUri": "[concat('https://', parameters('vaults_higuera_dev_kv_name'), '.vault.azure.net/')]"
+      },
+      "tags": {
+        "environment": "dev",
+        "project": "higuera"
+      },
+      "type": "Microsoft.KeyVault/vaults"
+    },
+    {
+      "apiVersion": "2025-01-31-preview",
+      "location": "eastus",
+      "name": "[parameters('userAssignedIdentities_higuera_admin_name')]",
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities"
+    },
+    {
+      "apiVersion": "2022-12-01-preview",
+      "location": "eastus2",
+      "name": "[parameters('dashboards_cea5baae_d4a0_4a13_8ae5_bb86c5cee51b_dashboard_name')]",
+      "properties": {
+        "lenses": [
+          {
+            "order": 0,
+            "parts": [
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "id",
+                      "value": "[parameters('components_higuera_dev_ai_externalid')]"
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0"
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AspNetOverviewPinnedPart"
+                },
+                "position": {
+                  "colSpan": 2,
+                  "rowSpan": 1,
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "Name": "higuera-dev-ai",
+                        "ResourceGroup": "higuera-rg",
+                        "SubscriptionId": "6b32cdbb-e9cf-4d8d-8293-8b37d7a7ad9c"
+                      }
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0"
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/ProactiveDetectionAsyncPart"
+                },
+                "position": {
+                  "colSpan": 1,
+                  "rowSpan": 1,
+                  "x": 2,
+                  "y": 0
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "Name": "higuera-dev-ai",
+                        "ResourceGroup": "higuera-rg",
+                        "SubscriptionId": "6b32cdbb-e9cf-4d8d-8293-8b37d7a7ad9c"
+                      }
+                    },
+                    {
+                      "name": "ResourceId",
+                      "value": "[parameters('components_higuera_dev_ai_externalid')]"
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/QuickPulseButtonSmallPart"
+                },
+                "position": {
+                  "colSpan": 1,
+                  "rowSpan": 1,
+                  "x": 3,
+                  "y": 0
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "Name": "higuera-dev-ai",
+                        "ResourceGroup": "higuera-rg",
+                        "SubscriptionId": "6b32cdbb-e9cf-4d8d-8293-8b37d7a7ad9c"
+                      }
+                    },
+                    {
+                      "name": "TimeContext",
+                      "value": {
+                        "createdTime": "2018-05-04T01:20:33.345Z",
+                        "durationMs": 86400000,
+                        "endTime": null,
+                        "grain": 1,
+                        "isInitialTime": true,
+                        "useDashboardTimeRange": false
+                      }
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0"
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AvailabilityNavButtonPart"
+                },
+                "position": {
+                  "colSpan": 1,
+                  "rowSpan": 1,
+                  "x": 4,
+                  "y": 0
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "Name": "higuera-dev-ai",
+                        "ResourceGroup": "higuera-rg",
+                        "SubscriptionId": "6b32cdbb-e9cf-4d8d-8293-8b37d7a7ad9c"
+                      }
+                    },
+                    {
+                      "name": "TimeContext",
+                      "value": {
+                        "createdTime": "2018-05-08T18:47:35.237Z",
+                        "durationMs": 86400000,
+                        "endTime": null,
+                        "grain": 1,
+                        "isInitialTime": true,
+                        "useDashboardTimeRange": false
+                      }
+                    },
+                    {
+                      "name": "ConfigurationId",
+                      "value": "78ce933e-e864-4b05-a27b-71fd55a6afad"
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AppMapButtonPart"
+                },
+                "position": {
+                  "colSpan": 1,
+                  "rowSpan": 1,
+                  "x": 5,
+                  "y": 0
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [],
+                  "settings": {
+                    "content": {
+                      "settings": {
+                        "content": "# Usage"
+                      }
+                    }
+                  },
+                  "type": "Extension[azure]/HubsExtension/PartType/MarkdownPart"
+                },
+                "position": {
+                  "colSpan": 3,
+                  "rowSpan": 1,
+                  "x": 0,
+                  "y": 1
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "Name": "higuera-dev-ai",
+                        "ResourceGroup": "higuera-rg",
+                        "SubscriptionId": "6b32cdbb-e9cf-4d8d-8293-8b37d7a7ad9c"
+                      }
+                    },
+                    {
+                      "name": "TimeContext",
+                      "value": {
+                        "createdTime": "2018-05-04T01:22:35.782Z",
+                        "durationMs": 86400000,
+                        "endTime": null,
+                        "grain": 1,
+                        "isInitialTime": true,
+                        "useDashboardTimeRange": false
+                      }
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/UsageUsersOverviewPart"
+                },
+                "position": {
+                  "colSpan": 1,
+                  "rowSpan": 1,
+                  "x": 3,
+                  "y": 1
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [],
+                  "settings": {
+                    "content": {
+                      "settings": {
+                        "content": "# Reliability"
+                      }
+                    }
+                  },
+                  "type": "Extension[azure]/HubsExtension/PartType/MarkdownPart"
+                },
+                "position": {
+                  "colSpan": 3,
+                  "rowSpan": 1,
+                  "x": 4,
+                  "y": 1
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ResourceId",
+                      "value": "[parameters('components_higuera_dev_ai_externalid')]"
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "DataModel",
+                      "value": {
+                        "timeContext": {
+                          "createdTime": "2018-05-04T23:42:40.072Z",
+                          "durationMs": 86400000,
+                          "grain": 1,
+                          "isInitialTime": false,
+                          "useDashboardTimeRange": false
+                        },
+                        "version": "1.0.0"
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "ConfigurationId",
+                      "value": "8a02f7bf-ac0f-40e1-afe9-f0e72cfee77f"
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/CuratedBladeFailuresPinnedPart"
+                },
+                "position": {
+                  "colSpan": 1,
+                  "rowSpan": 1,
+                  "x": 7,
+                  "y": 1
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [],
+                  "settings": {
+                    "content": {
+                      "settings": {
+                        "content": "# Responsiveness\r\n"
+                      }
+                    }
+                  },
+                  "type": "Extension[azure]/HubsExtension/PartType/MarkdownPart"
+                },
+                "position": {
+                  "colSpan": 3,
+                  "rowSpan": 1,
+                  "x": 8,
+                  "y": 1
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ResourceId",
+                      "value": "[parameters('components_higuera_dev_ai_externalid')]"
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "DataModel",
+                      "value": {
+                        "timeContext": {
+                          "createdTime": "2018-05-04T23:43:37.804Z",
+                          "durationMs": 86400000,
+                          "grain": 1,
+                          "isInitialTime": false,
+                          "useDashboardTimeRange": false
+                        },
+                        "version": "1.0.0"
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "ConfigurationId",
+                      "value": "2a8ede4f-2bee-4b9c-aed9-2db0e8a01865"
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/CuratedBladePerformancePinnedPart"
+                },
+                "position": {
+                  "colSpan": 1,
+                  "rowSpan": 1,
+                  "x": 11,
+                  "y": 1
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [],
+                  "settings": {
+                    "content": {
+                      "settings": {
+                        "content": "# Browser"
+                      }
+                    }
+                  },
+                  "type": "Extension[azure]/HubsExtension/PartType/MarkdownPart"
+                },
+                "position": {
+                  "colSpan": 3,
+                  "rowSpan": 1,
+                  "x": 12,
+                  "y": 1
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "Name": "higuera-dev-ai",
+                        "ResourceGroup": "higuera-rg",
+                        "SubscriptionId": "6b32cdbb-e9cf-4d8d-8293-8b37d7a7ad9c"
+                      }
+                    },
+                    {
+                      "name": "MetricsExplorerJsonDefinitionId",
+                      "value": "BrowserPerformanceTimelineMetrics"
+                    },
+                    {
+                      "name": "TimeContext",
+                      "value": {
+                        "createdTime": "2018-05-08T12:16:27.534Z",
+                        "durationMs": 86400000,
+                        "grain": 1,
+                        "isInitialTime": false,
+                        "useDashboardTimeRange": false
+                      }
+                    },
+                    {
+                      "name": "CurrentFilter",
+                      "value": {
+                        "eventTypes": [
+                          4,
+                          1,
+                          3,
+                          5,
+                          2,
+                          6,
+                          13
+                        ],
+                        "isPermissive": false,
+                        "typeFacets": {}
+                      }
+                    },
+                    {
+                      "name": "id",
+                      "value": {
+                        "Name": "higuera-dev-ai",
+                        "ResourceGroup": "higuera-rg",
+                        "SubscriptionId": "6b32cdbb-e9cf-4d8d-8293-8b37d7a7ad9c"
+                      }
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0"
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/MetricsExplorerBladePinnedPart"
+                },
+                "position": {
+                  "colSpan": 1,
+                  "rowSpan": 1,
+                  "x": 15,
+                  "y": 1
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "aggregationType": 5,
+                              "metricVisualization": {
+                                "color": "#47BDF5",
+                                "displayName": "Sessions"
+                              },
+                              "name": "sessions/count",
+                              "namespace": "microsoft.insights/components/kusto",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            },
+                            {
+                              "aggregationType": 5,
+                              "metricVisualization": {
+                                "color": "#7E58FF",
+                                "displayName": "Users"
+                              },
+                              "name": "users/count",
+                              "namespace": "microsoft.insights/components/kusto",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            }
+                          ],
+                          "openBladeOnClick": {
+                            "destinationBlade": {
+                              "bladeName": "ResourceMenuBlade",
+                              "extensionName": "HubsExtension",
+                              "parameters": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]",
+                                "menuid": "segmentationUsers"
+                              }
+                            },
+                            "openBlade": true
+                          },
+                          "title": "Unique sessions and users",
+                          "visualization": {
+                            "axisVisualization": {
+                              "x": {
+                                "axisType": 2,
+                                "isVisible": true
+                              },
+                              "y": {
+                                "axisType": 1,
+                                "isVisible": true
+                              }
+                            },
+                            "chartType": 2,
+                            "legendVisualization": {
+                              "hideSubtitle": false,
+                              "isVisible": true,
+                              "position": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "sharedTimeRange"
+                    }
+                  ],
+                  "settings": {},
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+                },
+                "position": {
+                  "colSpan": 4,
+                  "rowSpan": 3,
+                  "x": 0,
+                  "y": 2
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "aggregationType": 7,
+                              "metricVisualization": {
+                                "color": "#EC008C",
+                                "displayName": "Failed requests"
+                              },
+                              "name": "requests/failed",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            }
+                          ],
+                          "openBladeOnClick": {
+                            "destinationBlade": {
+                              "bladeName": "ResourceMenuBlade",
+                              "extensionName": "HubsExtension",
+                              "parameters": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]",
+                                "menuid": "failures"
+                              }
+                            },
+                            "openBlade": true
+                          },
+                          "title": "Failed requests",
+                          "visualization": {
+                            "axisVisualization": {
+                              "x": {
+                                "axisType": 2,
+                                "isVisible": true
+                              },
+                              "y": {
+                                "axisType": 1,
+                                "isVisible": true
+                              }
+                            },
+                            "chartType": 3,
+                            "legendVisualization": {
+                              "hideSubtitle": false,
+                              "isVisible": true,
+                              "position": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "sharedTimeRange"
+                    }
+                  ],
+                  "settings": {},
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+                },
+                "position": {
+                  "colSpan": 4,
+                  "rowSpan": 3,
+                  "x": 4,
+                  "y": 2
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "aggregationType": 4,
+                              "metricVisualization": {
+                                "color": "#00BCF2",
+                                "displayName": "Server response time"
+                              },
+                              "name": "requests/duration",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            }
+                          ],
+                          "openBladeOnClick": {
+                            "destinationBlade": {
+                              "bladeName": "ResourceMenuBlade",
+                              "extensionName": "HubsExtension",
+                              "parameters": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]",
+                                "menuid": "performance"
+                              }
+                            },
+                            "openBlade": true
+                          },
+                          "title": "Server response time",
+                          "visualization": {
+                            "axisVisualization": {
+                              "x": {
+                                "axisType": 2,
+                                "isVisible": true
+                              },
+                              "y": {
+                                "axisType": 1,
+                                "isVisible": true
+                              }
+                            },
+                            "chartType": 2,
+                            "legendVisualization": {
+                              "hideSubtitle": false,
+                              "isVisible": true,
+                              "position": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "sharedTimeRange"
+                    }
+                  ],
+                  "settings": {},
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+                },
+                "position": {
+                  "colSpan": 4,
+                  "rowSpan": 3,
+                  "x": 8,
+                  "y": 2
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "aggregationType": 4,
+                              "metricVisualization": {
+                                "color": "#7E58FF",
+                                "displayName": "Page load network connect time"
+                              },
+                              "name": "browserTimings/networkDuration",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            },
+                            {
+                              "aggregationType": 4,
+                              "metricVisualization": {
+                                "color": "#44F1C8",
+                                "displayName": "Client processing time"
+                              },
+                              "name": "browserTimings/processingDuration",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            },
+                            {
+                              "aggregationType": 4,
+                              "metricVisualization": {
+                                "color": "#EB9371",
+                                "displayName": "Send request time"
+                              },
+                              "name": "browserTimings/sendDuration",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            },
+                            {
+                              "aggregationType": 4,
+                              "metricVisualization": {
+                                "color": "#0672F1",
+                                "displayName": "Receiving response time"
+                              },
+                              "name": "browserTimings/receiveDuration",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            }
+                          ],
+                          "title": "Average page load time breakdown",
+                          "visualization": {
+                            "axisVisualization": {
+                              "x": {
+                                "axisType": 2,
+                                "isVisible": true
+                              },
+                              "y": {
+                                "axisType": 1,
+                                "isVisible": true
+                              }
+                            },
+                            "chartType": 3,
+                            "legendVisualization": {
+                              "hideSubtitle": false,
+                              "isVisible": true,
+                              "position": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "sharedTimeRange"
+                    }
+                  ],
+                  "settings": {},
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+                },
+                "position": {
+                  "colSpan": 4,
+                  "rowSpan": 3,
+                  "x": 12,
+                  "y": 2
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "aggregationType": 4,
+                              "metricVisualization": {
+                                "color": "#47BDF5",
+                                "displayName": "Availability"
+                              },
+                              "name": "availabilityResults/availabilityPercentage",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            }
+                          ],
+                          "openBladeOnClick": {
+                            "destinationBlade": {
+                              "bladeName": "ResourceMenuBlade",
+                              "extensionName": "HubsExtension",
+                              "parameters": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]",
+                                "menuid": "availability"
+                              }
+                            },
+                            "openBlade": true
+                          },
+                          "title": "Average availability",
+                          "visualization": {
+                            "axisVisualization": {
+                              "x": {
+                                "axisType": 2,
+                                "isVisible": true
+                              },
+                              "y": {
+                                "axisType": 1,
+                                "isVisible": true
+                              }
+                            },
+                            "chartType": 3,
+                            "legendVisualization": {
+                              "hideSubtitle": false,
+                              "isVisible": true,
+                              "position": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "sharedTimeRange"
+                    }
+                  ],
+                  "settings": {},
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+                },
+                "position": {
+                  "colSpan": 4,
+                  "rowSpan": 3,
+                  "x": 0,
+                  "y": 5
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "aggregationType": 7,
+                              "metricVisualization": {
+                                "color": "#47BDF5",
+                                "displayName": "Server exceptions"
+                              },
+                              "name": "exceptions/server",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            },
+                            {
+                              "aggregationType": 7,
+                              "metricVisualization": {
+                                "color": "#7E58FF",
+                                "displayName": "Dependency failures"
+                              },
+                              "name": "dependencies/failed",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            }
+                          ],
+                          "title": "Server exceptions and Dependency failures",
+                          "visualization": {
+                            "axisVisualization": {
+                              "x": {
+                                "axisType": 2,
+                                "isVisible": true
+                              },
+                              "y": {
+                                "axisType": 1,
+                                "isVisible": true
+                              }
+                            },
+                            "chartType": 2,
+                            "legendVisualization": {
+                              "hideSubtitle": false,
+                              "isVisible": true,
+                              "position": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "sharedTimeRange"
+                    }
+                  ],
+                  "settings": {},
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+                },
+                "position": {
+                  "colSpan": 4,
+                  "rowSpan": 3,
+                  "x": 4,
+                  "y": 5
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "aggregationType": 4,
+                              "metricVisualization": {
+                                "color": "#47BDF5",
+                                "displayName": "Processor time"
+                              },
+                              "name": "performanceCounters/processorCpuPercentage",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            },
+                            {
+                              "aggregationType": 4,
+                              "metricVisualization": {
+                                "color": "#7E58FF",
+                                "displayName": "Process CPU"
+                              },
+                              "name": "performanceCounters/processCpuPercentage",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            }
+                          ],
+                          "title": "Average processor and process CPU utilization",
+                          "visualization": {
+                            "axisVisualization": {
+                              "x": {
+                                "axisType": 2,
+                                "isVisible": true
+                              },
+                              "y": {
+                                "axisType": 1,
+                                "isVisible": true
+                              }
+                            },
+                            "chartType": 2,
+                            "legendVisualization": {
+                              "hideSubtitle": false,
+                              "isVisible": true,
+                              "position": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "sharedTimeRange"
+                    }
+                  ],
+                  "settings": {},
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+                },
+                "position": {
+                  "colSpan": 4,
+                  "rowSpan": 3,
+                  "x": 8,
+                  "y": 5
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "aggregationType": 7,
+                              "metricVisualization": {
+                                "color": "#47BDF5",
+                                "displayName": "Browser exceptions"
+                              },
+                              "name": "exceptions/browser",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            }
+                          ],
+                          "title": "Browser exceptions",
+                          "visualization": {
+                            "axisVisualization": {
+                              "x": {
+                                "axisType": 2,
+                                "isVisible": true
+                              },
+                              "y": {
+                                "axisType": 1,
+                                "isVisible": true
+                              }
+                            },
+                            "chartType": 2,
+                            "legendVisualization": {
+                              "hideSubtitle": false,
+                              "isVisible": true,
+                              "position": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "sharedTimeRange"
+                    }
+                  ],
+                  "settings": {},
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+                },
+                "position": {
+                  "colSpan": 4,
+                  "rowSpan": 3,
+                  "x": 12,
+                  "y": 5
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "aggregationType": 7,
+                              "metricVisualization": {
+                                "color": "#47BDF5",
+                                "displayName": "Availability test results count"
+                              },
+                              "name": "availabilityResults/count",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            }
+                          ],
+                          "title": "Availability test results count",
+                          "visualization": {
+                            "axisVisualization": {
+                              "x": {
+                                "axisType": 2,
+                                "isVisible": true
+                              },
+                              "y": {
+                                "axisType": 1,
+                                "isVisible": true
+                              }
+                            },
+                            "chartType": 2,
+                            "legendVisualization": {
+                              "hideSubtitle": false,
+                              "isVisible": true,
+                              "position": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "sharedTimeRange"
+                    }
+                  ],
+                  "settings": {},
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+                },
+                "position": {
+                  "colSpan": 4,
+                  "rowSpan": 3,
+                  "x": 0,
+                  "y": 8
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "aggregationType": 4,
+                              "metricVisualization": {
+                                "color": "#47BDF5",
+                                "displayName": "Process IO rate"
+                              },
+                              "name": "performanceCounters/processIOBytesPerSecond",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            }
+                          ],
+                          "title": "Average process I/O rate",
+                          "visualization": {
+                            "axisVisualization": {
+                              "x": {
+                                "axisType": 2,
+                                "isVisible": true
+                              },
+                              "y": {
+                                "axisType": 1,
+                                "isVisible": true
+                              }
+                            },
+                            "chartType": 2,
+                            "legendVisualization": {
+                              "hideSubtitle": false,
+                              "isVisible": true,
+                              "position": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "sharedTimeRange"
+                    }
+                  ],
+                  "settings": {},
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+                },
+                "position": {
+                  "colSpan": 4,
+                  "rowSpan": 3,
+                  "x": 4,
+                  "y": 8
+                }
+              },
+              {
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "aggregationType": 4,
+                              "metricVisualization": {
+                                "color": "#47BDF5",
+                                "displayName": "Available memory"
+                              },
+                              "name": "performanceCounters/memoryAvailableBytes",
+                              "namespace": "microsoft.insights/components",
+                              "resourceMetadata": {
+                                "id": "[parameters('components_higuera_dev_ai_externalid')]"
+                              }
+                            }
+                          ],
+                          "title": "Average available memory",
+                          "visualization": {
+                            "axisVisualization": {
+                              "x": {
+                                "axisType": 2,
+                                "isVisible": true
+                              },
+                              "y": {
+                                "axisType": 1,
+                                "isVisible": true
+                              }
+                            },
+                            "chartType": 2,
+                            "legendVisualization": {
+                              "hideSubtitle": false,
+                              "isVisible": true,
+                              "position": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isOptional": true,
+                      "name": "sharedTimeRange"
+                    }
+                  ],
+                  "settings": {},
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart"
+                },
+                "position": {
+                  "colSpan": 4,
+                  "rowSpan": 3,
+                  "x": 8,
+                  "y": 8
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "tags": {
+        "hidden-title": "higuera-dev-ai Dashboard"
+      },
+      "type": "Microsoft.Portal/dashboards"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "kind": "StorageV2",
+      "location": "eastus2",
+      "name": "[parameters('storageAccounts_higueradevst_name')]",
+      "properties": {
+        "accessTier": "Hot",
+        "allowBlobPublicAccess": false,
+        "allowCrossTenantReplication": false,
+        "encryption": {
+          "keySource": "Microsoft.Storage",
+          "services": {
+            "blob": {
+              "enabled": true,
+              "keyType": "Account"
+            },
+            "file": {
+              "enabled": true,
+              "keyType": "Account"
+            }
+          }
+        },
+        "minimumTlsVersion": "TLS1_2",
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "defaultAction": "Allow",
+          "ipRules": [],
+          "virtualNetworkRules": []
+        },
+        "supportsHttpsTrafficOnly": true
+      },
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "tags": {
+        "environment": "dev",
+        "project": "higuera"
+      },
+      "type": "Microsoft.Storage/storageAccounts"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "kind": "StorageV2",
+      "location": "eastus",
+      "name": "[parameters('storageAccounts_higuerafuncstorage_name')]",
+      "properties": {
+        "accessTier": "Hot",
+        "allowBlobPublicAccess": false,
+        "allowCrossTenantReplication": false,
+        "encryption": {
+          "keySource": "Microsoft.Storage",
+          "services": {
+            "blob": {
+              "enabled": true,
+              "keyType": "Account"
+            },
+            "file": {
+              "enabled": true,
+              "keyType": "Account"
+            }
+          }
+        },
+        "minimumTlsVersion": "TLS1_0",
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "defaultAction": "Allow",
+          "ipRules": [],
+          "virtualNetworkRules": []
+        },
+        "supportsHttpsTrafficOnly": true
+      },
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "type": "Microsoft.Storage/storageAccounts"
+    },
+    {
+      "apiVersion": "2024-04-01",
+      "kind": "functionapp",
+      "location": "East US 2",
+      "name": "[parameters('serverfarms_higuera_dev_plan_name')]",
+      "properties": {
+        "elasticScaleEnabled": false,
+        "hyperV": false,
+        "isSpot": false,
+        "isXenon": false,
+        "maximumElasticWorkerCount": 0,
+        "perSiteScaling": false,
+        "reserved": false,
+        "targetWorkerCount": 0,
+        "targetWorkerSizeId": 0,
+        "zoneRedundant": false
+      },
+      "sku": {
+        "capacity": 0,
+        "family": "Y",
+        "name": "Y1",
+        "size": "Y1",
+        "tier": "Dynamic"
+      },
+      "tags": {
+        "environment": "dev",
+        "project": "higuera"
+      },
+      "type": "Microsoft.Web/serverfarms"
+    },
+    {
+      "apiVersion": "2024-04-01",
+      "location": "West US 2",
+      "name": "[parameters('staticSites_higuera_dashboard_name')]",
+      "properties": {
+        "allowConfigFileUpdates": true,
+        "branch": "main",
+        "enterpriseGradeCdnStatus": "Disabled",
+        "provider": "GitHub",
+        "repositoryUrl": "https://github.com/erikuscs/HigueraAzureFunction",
+        "stagingEnvironmentPolicy": "Enabled"
+      },
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard"
+      },
+      "type": "Microsoft.Web/staticSites"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/echo-api')]",
+      "properties": {
+        "apiRevision": "1",
+        "authenticationSettings": {
+          "oAuth2AuthenticationSettings": [],
+          "openidAuthenticationSettings": []
+        },
+        "displayName": "Echo API",
+        "isCurrent": true,
+        "path": "echo",
+        "protocols": [
+          "https"
+        ],
+        "serviceUrl": "https://echo.playground.azure-api.net/api",
+        "subscriptionKeyParameterNames": {
+          "header": "Ocp-Apim-Subscription-Key",
+          "query": "subscription-key"
+        },
+        "subscriptionRequired": true
+      },
+      "type": "Microsoft.ApiManagement/service/apis"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/administrators')]",
+      "properties": {
+        "description": "Administrators is a built-in group containing the admin email account provided at the time of service creation. Its membership is managed by the system.",
+        "displayName": "Administrators",
+        "type": "system"
+      },
+      "type": "Microsoft.ApiManagement/service/groups"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/developers')]",
+      "properties": {
+        "description": "Developers is a built-in group. Its membership is managed by the system. Signed-in users fall into this group.",
+        "displayName": "Developers",
+        "type": "system"
+      },
+      "type": "Microsoft.ApiManagement/service/groups"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/guests')]",
+      "properties": {
+        "description": "Guests is a built-in group. Its membership is managed by the system. Unauthenticated users visiting the developer portal fall into this group.",
+        "displayName": "Guests",
+        "type": "system"
+      },
+      "type": "Microsoft.ApiManagement/service/groups"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/AccountClosedPublisher')]",
+      "type": "Microsoft.ApiManagement/service/notifications"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/BCC')]",
+      "type": "Microsoft.ApiManagement/service/notifications"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/NewApplicationNotificationMessage')]",
+      "type": "Microsoft.ApiManagement/service/notifications"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/NewIssuePublisherNotificationMessage')]",
+      "type": "Microsoft.ApiManagement/service/notifications"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/PurchasePublisherNotificationMessage')]",
+      "type": "Microsoft.ApiManagement/service/notifications"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/QuotaLimitApproachingPublisherNotificationMessage')]",
+      "type": "Microsoft.ApiManagement/service/notifications"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/RequestPublisherNotificationMessage')]",
+      "type": "Microsoft.ApiManagement/service/notifications"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/policy')]",
+      "properties": {
+        "format": "xml",
+        "value": "<!--\r\n    IMPORTANT:\r\n    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.\r\n    - Only the <forward-request> policy element can appear within the <backend> section element.\r\n    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.\r\n    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.\r\n    - To add a policy position the cursor at the desired insertion point and click on the round button associated with the policy.\r\n    - To remove a policy, delete the corresponding policy statement from the policy document.\r\n    - Policies are applied in the order of their appearance, from the top down.\r\n-->\r\n<policies>\r\n  <inbound />\r\n  <backend>\r\n    <forward-request />\r\n  </backend>\r\n  <outbound />\r\n</policies>"
+      },
+      "type": "Microsoft.ApiManagement/service/policies"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/default')]",
+      "properties": {
+        "cors": {
+          "allowedOrigins": []
+        },
+        "csp": {
+          "allowedSources": [],
+          "mode": "disabled",
+          "reportUri": []
+        },
+        "delegation": {
+          "delegateRegistration": false,
+          "delegateSubscription": false
+        },
+        "enableBasicAuth": true,
+        "signin": {
+          "require": false
+        },
+        "signup": {
+          "termsOfService": {
+            "requireConsent": false
+          }
+        }
+      },
+      "type": "Microsoft.ApiManagement/service/portalconfigs"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/delegation')]",
+      "properties": {
+        "subscriptions": {
+          "enabled": false
+        },
+        "userRegistration": {
+          "enabled": false
+        }
+      },
+      "type": "Microsoft.ApiManagement/service/portalsettings"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/signin')]",
+      "properties": {
+        "enabled": false
+      },
+      "type": "Microsoft.ApiManagement/service/portalsettings"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/signup')]",
+      "properties": {
+        "enabled": true,
+        "termsOfService": {
+          "consentRequired": false,
+          "enabled": false
+        }
+      },
+      "type": "Microsoft.ApiManagement/service/portalsettings"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/starter')]",
+      "properties": {
+        "approvalRequired": false,
+        "description": "Subscribers will be able to run 5 calls/minute up to a maximum of 100 calls/week.",
+        "displayName": "Starter",
+        "state": "published",
+        "subscriptionRequired": true,
+        "subscriptionsLimit": 1
+      },
+      "type": "Microsoft.ApiManagement/service/products"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/unlimited')]",
+      "properties": {
+        "approvalRequired": true,
+        "description": "Subscribers have completely unlimited access to the API. Administrator approval is required.",
+        "displayName": "Unlimited",
+        "state": "published",
+        "subscriptionRequired": true,
+        "subscriptionsLimit": 1
+      },
+      "type": "Microsoft.ApiManagement/service/products"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/master')]",
+      "properties": {
+        "allowTracing": false,
+        "displayName": "Built-in all-access subscription",
+        "scope": "[concat(resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name')), '/')]",
+        "state": "active"
+      },
+      "type": "Microsoft.ApiManagement/service/subscriptions"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/AccountClosedDeveloper')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          On behalf of $OrganizationName and our customers we thank you for giving us a try. Your $OrganizationName API account is now closed.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Your $OrganizationName Team</p>\r\n    <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r\n    <p />\r\n  </body>\r\n</html>",
+        "description": "Developers receive this farewell email after they close their account.",
+        "parameters": [
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          }
+        ],
+        "subject": "Thank you for using the $OrganizationName API!",
+        "title": "Developer farewell letter"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/ApplicationApprovedNotificationMessage')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          We are happy to let you know that your request to publish the $AppName application in the application gallery has been approved. Your application has been published and can be viewed <a href=\"http://$DevPortalUrl/Applications/Details/$AppId\">here</a>.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Best,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n  </body>\r\n</html>",
+        "description": "Developers who submitted their application for publication in the application gallery on the developer portal receive this email after their submission is approved.",
+        "parameters": [
+          {
+            "name": "AppId",
+            "title": "Application id"
+          },
+          {
+            "name": "AppName",
+            "title": "Application name"
+          },
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          }
+        ],
+        "subject": "Your application $AppName is published in the application gallery",
+        "title": "Application gallery submission approved (deprecated)"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/ConfirmSignUpIdentityDefault')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <title>Letter</title>\r\n  </head>\r\n  <body>\r\n    <table width=\"100%\">\r\n      <tr>\r\n        <td>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\"></p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you for joining the $OrganizationName API program! We host a growing number of cool APIs and strive to provide an awesome experience for API developers.</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">First order of business is to activate your account and get you going. To that end, please click on the following link:</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a id=\"confirmUrl\" href=\"$ConfirmUrl\" style=\"text-decoration:none\">\r\n              <strong>$ConfirmUrl</strong>\r\n            </a>\r\n          </p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">If clicking the link does not work, please copy-and-paste or re-type it into your browser's address bar and hit \"Enter\".</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">$OrganizationName API Team</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r\n          </p>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n  </body>\r\n</html>",
+        "description": "Developers receive this email to confirm their e-mail address after they sign up for a new account.",
+        "parameters": [
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          },
+          {
+            "name": "ConfirmUrl",
+            "title": "Developer activation URL"
+          },
+          {
+            "name": "DevPortalHost",
+            "title": "Developer portal hostname"
+          },
+          {
+            "name": "ConfirmQuery",
+            "title": "Query string part of the activation URL"
+          }
+        ],
+        "subject": "Please confirm your new $OrganizationName API account",
+        "title": "New developer account confirmation"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/EmailChangeIdentityDefault')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <title>Letter</title>\r\n  </head>\r\n  <body>\r\n    <table width=\"100%\">\r\n      <tr>\r\n        <td>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\"></p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">You are receiving this email because you made a change to the email address on your $OrganizationName API account.</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Please click on the following link to confirm the change:</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a id=\"confirmUrl\" href=\"$ConfirmUrl\" style=\"text-decoration:none\">\r\n              <strong>$ConfirmUrl</strong>\r\n            </a>\r\n          </p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">If clicking the link does not work, please copy-and-paste or re-type it into your browser's address bar and hit \"Enter\".</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">$OrganizationName API Team</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r\n          </p>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n  </body>\r\n</html>",
+        "description": "Developers receive this email to confirm a new e-mail address after they change their existing one associated with their account.",
+        "parameters": [
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          },
+          {
+            "name": "ConfirmUrl",
+            "title": "Developer confirmation URL"
+          },
+          {
+            "name": "DevPortalHost",
+            "title": "Developer portal hostname"
+          },
+          {
+            "name": "ConfirmQuery",
+            "title": "Query string part of the confirmation URL"
+          }
+        ],
+        "subject": "Please confirm the new email associated with your $OrganizationName API account",
+        "title": "Email change confirmation"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/InviteUserNotificationMessage')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          Your account has been created. Please follow the link below to visit the $OrganizationName developer portal and claim it:\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n      <a href=\"$ConfirmUrl\">$ConfirmUrl</a>\r\n    </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Best,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n  </body>\r\n</html>",
+        "description": "An e-mail invitation to create an account, sent on request by API publishers.",
+        "parameters": [
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "ConfirmUrl",
+            "title": "Confirmation link"
+          },
+          {
+            "name": "DevPortalHost",
+            "title": "Developer portal hostname"
+          },
+          {
+            "name": "ConfirmQuery",
+            "title": "Query string part of the confirmation link"
+          }
+        ],
+        "subject": "You are invited to join the $OrganizationName developer network",
+        "title": "Invite user"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/NewCommentNotificationMessage')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">This is a brief note to let you know that $CommenterFirstName $CommenterLastName made the following comment on the issue $IssueName you created:</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">$CommentText</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          To view the issue on the developer portal click <a href=\"http://$DevPortalUrl/issues/$IssueId\">here</a>.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Best,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n  </body>\r\n</html>",
+        "description": "Developers receive this email when someone comments on the issue they created on the Issues page of the developer portal.",
+        "parameters": [
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "CommenterFirstName",
+            "title": "Commenter first name"
+          },
+          {
+            "name": "CommenterLastName",
+            "title": "Commenter last name"
+          },
+          {
+            "name": "IssueId",
+            "title": "Issue id"
+          },
+          {
+            "name": "IssueName",
+            "title": "Issue name"
+          },
+          {
+            "name": "CommentText",
+            "title": "Comment text"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          }
+        ],
+        "subject": "$IssueName issue has a new comment",
+        "title": "New comment added to an issue (deprecated)"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/NewDeveloperNotificationMessage')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <title>Letter</title>\r\n  </head>\r\n  <body>\r\n    <h1 style=\"color:#000505;font-size:18pt;font-family:'Segoe UI'\">\r\n          Welcome to <span style=\"color:#003363\">$OrganizationName API!</span></h1>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Your $OrganizationName API program registration is completed and we are thrilled to have you as a customer. Here are a few important bits of information for your reference:</p>\r\n    <table width=\"100%\" style=\"margin:20px 0\">\r\n      <tr>\r\n            #if ($IdentityProvider == \"Basic\")\r\n            <td width=\"50%\" style=\"height:40px;vertical-align:top;font-family:'Segoe UI';font-size:12pt\">\r\n              Please use the following <strong>username</strong> when signing into any of the ${OrganizationName}-hosted developer portals:\r\n            </td><td style=\"vertical-align:top;font-family:'Segoe UI';font-size:12pt\"><strong>$DevUsername</strong></td>\r\n            #else\r\n            <td width=\"50%\" style=\"height:40px;vertical-align:top;font-family:'Segoe UI';font-size:12pt\">\r\n              Please use the following <strong>$IdentityProvider account</strong> when signing into any of the ${OrganizationName}-hosted developer portals:\r\n            </td><td style=\"vertical-align:top;font-family:'Segoe UI';font-size:12pt\"><strong>$DevUsername</strong></td>            \r\n            #end\r\n          </tr>\r\n      <tr>\r\n        <td style=\"height:40px;vertical-align:top;font-family:'Segoe UI';font-size:12pt\">\r\n              We will direct all communications to the following <strong>email address</strong>:\r\n            </td>\r\n        <td style=\"vertical-align:top;font-family:'Segoe UI';font-size:12pt\">\r\n          <a href=\"mailto:$DevEmail\" style=\"text-decoration:none\">\r\n            <strong>$DevEmail</strong>\r\n          </a>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Best of luck in your API pursuits!</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">$OrganizationName API Team</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n      <a href=\"http://$DevPortalUrl\">$DevPortalUrl</a>\r\n    </p>\r\n  </body>\r\n</html>",
+        "description": "Developers receive this “welcome” email after they confirm their new account.",
+        "parameters": [
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "DevUsername",
+            "title": "Developer user name"
+          },
+          {
+            "name": "DevEmail",
+            "title": "Developer email"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          },
+          {
+            "name": "IdentityProvider",
+            "title": "Identity Provider selected by Organization"
+          }
+        ],
+        "subject": "Welcome to the $OrganizationName API!",
+        "title": "Developer welcome letter"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/NewIssueNotificationMessage')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you for contacting us. Our API team will review your issue and get back to you soon.</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          Click this <a href=\"http://$DevPortalUrl/issues/$IssueId\">link</a> to view or edit your request.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Best,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n  </body>\r\n</html>",
+        "description": "This email is sent to developers after they create a new topic on the Issues page of the developer portal.",
+        "parameters": [
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "IssueId",
+            "title": "Issue id"
+          },
+          {
+            "name": "IssueName",
+            "title": "Issue name"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          }
+        ],
+        "subject": "Your request $IssueName was received",
+        "title": "New issue received (deprecated)"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/PasswordResetByAdminNotificationMessage')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <table width=\"100%\">\r\n      <tr>\r\n        <td>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\"></p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">The password of your $OrganizationName API account has been reset, per your request.</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n                Your new password is: <strong>$DevPassword</strong></p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Please make sure to change it next time you sign in.</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">$OrganizationName API Team</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r\n          </p>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n  </body>\r\n</html>",
+        "description": "Developers receive this email when the publisher resets their password.",
+        "parameters": [
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "DevPassword",
+            "title": "New Developer password"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          }
+        ],
+        "subject": "Your password was reset",
+        "title": "Password reset by publisher notification (Password reset by admin)"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/PasswordResetIdentityDefault')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <title>Letter</title>\r\n  </head>\r\n  <body>\r\n    <table width=\"100%\">\r\n      <tr>\r\n        <td>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\"></p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">You are receiving this email because you requested to change the password on your $OrganizationName API account.</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Please click on the link below and follow instructions to create your new password:</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a id=\"resetUrl\" href=\"$ConfirmUrl\" style=\"text-decoration:none\">\r\n              <strong>$ConfirmUrl</strong>\r\n            </a>\r\n          </p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">If clicking the link does not work, please copy-and-paste or re-type it into your browser's address bar and hit \"Enter\".</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">$OrganizationName API Team</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r\n          </p>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n  </body>\r\n</html>",
+        "description": "Developers receive this email when they request a password change of their account. The purpose of the email is to verify that the account owner made the request and to provide a one-time perishable URL for changing the password.",
+        "parameters": [
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          },
+          {
+            "name": "ConfirmUrl",
+            "title": "Developer new password instruction URL"
+          },
+          {
+            "name": "DevPortalHost",
+            "title": "Developer portal hostname"
+          },
+          {
+            "name": "ConfirmQuery",
+            "title": "Query string part of the instruction URL"
+          }
+        ],
+        "subject": "Your password change request",
+        "title": "Password change confirmation"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/PurchaseDeveloperNotificationMessage')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Greetings $DevFirstName $DevLastName!</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          Thank you for subscribing to the <a href=\"http://$DevPortalUrl/products/$ProdId\"><strong>$ProdName</strong></a> and welcome to the $OrganizationName developer community. We are delighted to have you as part of the team and are looking forward to the amazing applications you will build using our API!\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Below are a few subscription details for your reference:</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n      <ul>\r\n            #if ($SubStartDate != \"\")\r\n            <li style=\"font-size:12pt;font-family:'Segoe UI'\">Start date: $SubStartDate</li>\r\n            #end\r\n            \r\n            #if ($SubTerm != \"\")\r\n            <li style=\"font-size:12pt;font-family:'Segoe UI'\">Subscription term: $SubTerm</li>\r\n            #end\r\n          </ul>\r\n    </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            Visit the developer <a href=\"http://$DevPortalUrl/developer\">profile area</a> to manage your subscription and subscription keys\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">A couple of pointers to help get you started:</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n      <strong>\r\n        <a href=\"http://$DevPortalUrl/docs/services?product=$ProdId\">Learn about the API</a>\r\n      </strong>\r\n    </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The API documentation provides all information necessary to make a request and to process a response. Code samples are provided per API operation in a variety of languages. Moreover, an interactive console allows making API calls directly from the developer portal without writing any code.</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n      <strong>\r\n        <a href=\"http://$DevPortalUrl/applications\">Feature your app in the app gallery</a>\r\n      </strong>\r\n    </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">You can publish your application on our gallery for increased visibility to potential new users.</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n      <strong>\r\n        <a href=\"http://$DevPortalUrl/issues\">Stay in touch</a>\r\n      </strong>\r\n    </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          If you have an issue, a question, a suggestion, a request, or if you just want to tell us something, go to the <a href=\"http://$DevPortalUrl/issues\">Issues</a> page on the developer portal and create a new topic.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Happy hacking,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n    <a style=\"font-size:12pt;font-family:'Segoe UI'\" href=\"http://$DevPortalUrl\">$DevPortalUrl</a>\r\n  </body>\r\n</html>",
+        "description": "Developers receive this acknowledgement email after subscribing to a product.",
+        "parameters": [
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "ProdId",
+            "title": "Product ID"
+          },
+          {
+            "name": "ProdName",
+            "title": "Product name"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "SubStartDate",
+            "title": "Subscription start date"
+          },
+          {
+            "name": "SubTerm",
+            "title": "Subscription term"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          }
+        ],
+        "subject": "Your subscription to the $ProdName",
+        "title": "New subscription activated"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/QuotaLimitApproachingDeveloperNotificationMessage')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head>\r\n    <style>\r\n          body {font-size:12pt; font-family:\"Segoe UI\",\"Segoe WP\",\"Tahoma\",\"Arial\",\"sans-serif\";}\r\n          .alert { color: red; }\r\n          .child1 { padding-left: 20px; }\r\n          .child2 { padding-left: 40px; }\r\n          .number { text-align: right; }\r\n          .text { text-align: left; }\r\n          th, td { padding: 4px 10px; min-width: 100px; }\r\n          th { background-color: #DDDDDD;}\r\n        </style>\r\n  </head>\r\n  <body>\r\n    <p>Greetings $DevFirstName $DevLastName!</p>\r\n    <p>\r\n          You are approaching the quota limit on you subscription to the <strong>$ProdName</strong> product (primary key $SubPrimaryKey).\r\n          #if ($QuotaResetDate != \"\")\r\n          This quota will be renewed on $QuotaResetDate.\r\n          #else\r\n          This quota will not be renewed.\r\n          #end\r\n        </p>\r\n    <p>Below are details on quota usage for the subscription:</p>\r\n    <p>\r\n      <table>\r\n        <thead>\r\n          <th class=\"text\">Quota Scope</th>\r\n          <th class=\"number\">Calls</th>\r\n          <th class=\"number\">Call Quota</th>\r\n          <th class=\"number\">Bandwidth</th>\r\n          <th class=\"number\">Bandwidth Quota</th>\r\n        </thead>\r\n        <tbody>\r\n          <tr>\r\n            <td class=\"text\">Subscription</td>\r\n            <td class=\"number\">\r\n                  #if ($CallsAlert == true)\r\n                  <span class=\"alert\">$Calls</span>\r\n                  #else\r\n                  $Calls\r\n                  #end\r\n                </td>\r\n            <td class=\"number\">$CallQuota</td>\r\n            <td class=\"number\">\r\n                  #if ($BandwidthAlert == true)\r\n                  <span class=\"alert\">$Bandwidth</span>\r\n                  #else\r\n                  $Bandwidth\r\n                  #end\r\n                </td>\r\n            <td class=\"number\">$BandwidthQuota</td>\r\n          </tr>\r\n              #foreach ($api in $Apis)\r\n              <tr><td class=\"child1 text\">API: $api.Name</td><td class=\"number\">\r\n                  #if ($api.CallsAlert == true)\r\n                  <span class=\"alert\">$api.Calls</span>\r\n                  #else\r\n                  $api.Calls\r\n                  #end\r\n                </td><td class=\"number\">$api.CallQuota</td><td class=\"number\">\r\n                  #if ($api.BandwidthAlert == true)\r\n                  <span class=\"alert\">$api.Bandwidth</span>\r\n                  #else\r\n                  $api.Bandwidth\r\n                  #end\r\n                </td><td class=\"number\">$api.BandwidthQuota</td></tr>\r\n              #foreach ($operation in $api.Operations)\r\n              <tr><td class=\"child2 text\">Operation: $operation.Name</td><td class=\"number\">\r\n                  #if ($operation.CallsAlert == true)\r\n                  <span class=\"alert\">$operation.Calls</span>\r\n                  #else\r\n                  $operation.Calls\r\n                  #end\r\n                </td><td class=\"number\">$operation.CallQuota</td><td class=\"number\">\r\n                  #if ($operation.BandwidthAlert == true)\r\n                  <span class=\"alert\">$operation.Bandwidth</span>\r\n                  #else\r\n                  $operation.Bandwidth\r\n                  #end\r\n                </td><td class=\"number\">$operation.BandwidthQuota</td></tr>\r\n              #end\r\n              #end\r\n            </tbody>\r\n      </table>\r\n    </p>\r\n    <p>Thank you,</p>\r\n    <p>$OrganizationName API Team</p>\r\n    <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r\n    <p />\r\n  </body>\r\n</html>",
+        "description": "Developers receive this email to alert them when they are approaching a quota limit.",
+        "parameters": [
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "ProdName",
+            "title": "Product name"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "SubPrimaryKey",
+            "title": "Primary Subscription key"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          },
+          {
+            "name": "QuotaResetDate",
+            "title": "Quota reset date"
+          }
+        ],
+        "subject": "You are approaching an API quota limit",
+        "title": "Developer quota limit approaching notification"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/RejectDeveloperNotificationMessage')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          We would like to inform you that we reviewed your subscription request for the <strong>$ProdName</strong>.\r\n        </p>\r\n        #if ($SubDeclineReason == \"\")\r\n        <p style=\"font-size:12pt;font-family:'Segoe UI'\">Regretfully, we were unable to approve it, as subscriptions are temporarily suspended at this time.</p>\r\n        #else\r\n        <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          Regretfully, we were unable to approve it at this time for the following reason:\r\n          <div style=\"margin-left: 1.5em;\"> $SubDeclineReason </div></p>\r\n        #end\r\n        <p style=\"font-size:12pt;font-family:'Segoe UI'\"> We truly appreciate your interest. </p><p style=\"font-size:12pt;font-family:'Segoe UI'\">All the best,</p><p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p><a style=\"font-size:12pt;font-family:'Segoe UI'\" href=\"http://$DevPortalUrl\">$DevPortalUrl</a></body>\r\n</html>",
+        "description": "This email is sent to developers when their subscription requests for products requiring publisher approval is declined.",
+        "parameters": [
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "SubDeclineReason",
+            "title": "Reason for declining subscription"
+          },
+          {
+            "name": "ProdName",
+            "title": "Product name"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          }
+        ],
+        "subject": "Your subscription request for the $ProdName",
+        "title": "Subscription request declined"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/RequestDeveloperNotificationMessage')]",
+      "properties": {
+        "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          Thank you for your interest in our <strong>$ProdName</strong> API product!\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          We were delighted to receive your subscription request. We will promptly review it and get back to you at <strong>$DevEmail</strong>.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n    <a style=\"font-size:12pt;font-family:'Segoe UI'\" href=\"http://$DevPortalUrl\">$DevPortalUrl</a>\r\n  </body>\r\n</html>",
+        "description": "This email is sent to developers to acknowledge receipt of their subscription requests for products requiring publisher approval.",
+        "parameters": [
+          {
+            "name": "DevFirstName",
+            "title": "Developer first name"
+          },
+          {
+            "name": "DevLastName",
+            "title": "Developer last name"
+          },
+          {
+            "name": "DevEmail",
+            "title": "Developer email"
+          },
+          {
+            "name": "ProdName",
+            "title": "Product name"
+          },
+          {
+            "name": "OrganizationName",
+            "title": "Organization name"
+          },
+          {
+            "name": "DevPortalUrl",
+            "title": "Developer portal URL"
+          }
+        ],
+        "subject": "Your subscription request for the $ProdName",
+        "title": "Subscription request received"
+      },
+      "type": "Microsoft.ApiManagement/service/templates"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/1')]",
+      "properties": {
+        "email": "erik.herring@sustanablegaps.com",
+        "firstName": "Administrator",
+        "identities": [
+          {
+            "id": "erik.herring@sustanablegaps.com",
+            "provider": "Azure"
+          }
+        ],
+        "lastName": "[parameters('users_1_lastName')]",
+        "state": "active"
+      },
+      "type": "Microsoft.ApiManagement/service/users"
+    },
+    {
+      "apiVersion": "2024-11-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Cache/Redis', parameters('Redis_higuera_dev_redis_name'))]"
+      ],
+      "name": "[concat(parameters('Redis_higuera_dev_redis_name'), '/Data Contributor')]",
+      "properties": {
+        "permissions": "+@all -@dangerous +cluster|info +cluster|nodes +cluster|slots allkeys"
+      },
+      "type": "Microsoft.Cache/Redis/accessPolicies"
+    },
+    {
+      "apiVersion": "2024-11-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Cache/Redis', parameters('Redis_higuera_dev_redis_name'))]"
+      ],
+      "name": "[concat(parameters('Redis_higuera_dev_redis_name'), '/Data Owner')]",
+      "properties": {
+        "permissions": "+@all allkeys"
+      },
+      "type": "Microsoft.Cache/Redis/accessPolicies"
+    },
+    {
+      "apiVersion": "2024-11-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Cache/Redis', parameters('Redis_higuera_dev_redis_name'))]"
+      ],
+      "name": "[concat(parameters('Redis_higuera_dev_redis_name'), '/Data Reader')]",
+      "properties": {
+        "permissions": "+@read +@connection +cluster|info +cluster|nodes +cluster|slots allkeys"
+      },
+      "type": "Microsoft.Cache/Redis/accessPolicies"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/degradationindependencyduration')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "Smart Detection rules notify you of performance anomaly issues.",
+          "DisplayName": "Degradation in dependency duration",
+          "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": false,
+          "Name": "degradationindependencyduration",
+          "SupportsEmailNotifications": true
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/degradationindependencyduration')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "Smart Detection rules notify you of performance anomaly issues.",
+          "DisplayName": "Degradation in dependency duration",
+          "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": false,
+          "Name": "degradationindependencyduration",
+          "SupportsEmailNotifications": true
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/degradationinserverresponsetime')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "Smart Detection rules notify you of performance anomaly issues.",
+          "DisplayName": "Degradation in server response time",
+          "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": false,
+          "Name": "degradationinserverresponsetime",
+          "SupportsEmailNotifications": true
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/degradationinserverresponsetime')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "Smart Detection rules notify you of performance anomaly issues.",
+          "DisplayName": "Degradation in server response time",
+          "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": false,
+          "Name": "degradationinserverresponsetime",
+          "SupportsEmailNotifications": true
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/digestMailConfiguration')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "This rule describes the digest mail preferences",
+          "DisplayName": "Digest Mail Configuration",
+          "HelpUrl": "www.homail.com",
+          "IsEnabledByDefault": true,
+          "IsHidden": true,
+          "IsInPreview": false,
+          "Name": "digestMailConfiguration",
+          "SupportsEmailNotifications": true
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/digestMailConfiguration')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "This rule describes the digest mail preferences",
+          "DisplayName": "Digest Mail Configuration",
+          "HelpUrl": "www.homail.com",
+          "IsEnabledByDefault": true,
+          "IsHidden": true,
+          "IsInPreview": false,
+          "Name": "digestMailConfiguration",
+          "SupportsEmailNotifications": true
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/extension_billingdatavolumedailyspikeextension')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "This detection rule automatically analyzes the billing data generated by your application, and can warn you about an unusual increase in your application's billing costs",
+          "DisplayName": "Abnormal rise in daily data volume (preview)",
+          "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/billing-data-volume-daily-spike.md",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": true,
+          "Name": "extension_billingdatavolumedailyspikeextension",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/extension_billingdatavolumedailyspikeextension')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "This detection rule automatically analyzes the billing data generated by your application, and can warn you about an unusual increase in your application's billing costs",
+          "DisplayName": "Abnormal rise in daily data volume (preview)",
+          "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/billing-data-volume-daily-spike.md",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": true,
+          "Name": "extension_billingdatavolumedailyspikeextension",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/extension_canaryextension')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "Canary extension",
+          "DisplayName": "Canary extension",
+          "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/",
+          "IsEnabledByDefault": true,
+          "IsHidden": true,
+          "IsInPreview": true,
+          "Name": "extension_canaryextension",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/extension_canaryextension')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "Canary extension",
+          "DisplayName": "Canary extension",
+          "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/",
+          "IsEnabledByDefault": true,
+          "IsHidden": true,
+          "IsInPreview": true,
+          "Name": "extension_canaryextension",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/extension_exceptionchangeextension')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "This detection rule automatically analyzes the exceptions thrown in your application, and can warn you about unusual patterns in your exception telemetry.",
+          "DisplayName": "Abnormal rise in exception volume (preview)",
+          "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/abnormal-rise-in-exception-volume.md",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": true,
+          "Name": "extension_exceptionchangeextension",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/extension_exceptionchangeextension')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "This detection rule automatically analyzes the exceptions thrown in your application, and can warn you about unusual patterns in your exception telemetry.",
+          "DisplayName": "Abnormal rise in exception volume (preview)",
+          "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/abnormal-rise-in-exception-volume.md",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": true,
+          "Name": "extension_exceptionchangeextension",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/extension_memoryleakextension')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "This detection rule automatically analyzes the memory consumption of each process in your application, and can warn you about potential memory leaks or increased memory consumption.",
+          "DisplayName": "Potential memory leak detected (preview)",
+          "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/memory-leak.md",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": true,
+          "Name": "extension_memoryleakextension",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/extension_memoryleakextension')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "This detection rule automatically analyzes the memory consumption of each process in your application, and can warn you about potential memory leaks or increased memory consumption.",
+          "DisplayName": "Potential memory leak detected (preview)",
+          "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/memory-leak.md",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": true,
+          "Name": "extension_memoryleakextension",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/extension_securityextensionspackage')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "This detection rule automatically analyzes the telemetry generated by your application and detects potential security issues.",
+          "DisplayName": "Potential security issue detected (preview)",
+          "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/application-security-detection-pack.md",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": true,
+          "Name": "extension_securityextensionspackage",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/extension_securityextensionspackage')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "This detection rule automatically analyzes the telemetry generated by your application and detects potential security issues.",
+          "DisplayName": "Potential security issue detected (preview)",
+          "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/application-security-detection-pack.md",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": true,
+          "Name": "extension_securityextensionspackage",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/extension_traceseveritydetector')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "This detection rule automatically analyzes the trace logs emitted from your application, and can warn you about unusual patterns in the severity of your trace telemetry.",
+          "DisplayName": "Degradation in trace severity ratio (preview)",
+          "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/degradation-in-trace-severity-ratio.md",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": true,
+          "Name": "extension_traceseveritydetector",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/extension_traceseveritydetector')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "This detection rule automatically analyzes the trace logs emitted from your application, and can warn you about unusual patterns in the severity of your trace telemetry.",
+          "DisplayName": "Degradation in trace severity ratio (preview)",
+          "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/degradation-in-trace-severity-ratio.md",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": true,
+          "Name": "extension_traceseveritydetector",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/longdependencyduration')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "Smart Detection rules notify you of performance anomaly issues.",
+          "DisplayName": "Long dependency duration",
+          "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": false,
+          "Name": "longdependencyduration",
+          "SupportsEmailNotifications": true
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/longdependencyduration')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "Smart Detection rules notify you of performance anomaly issues.",
+          "DisplayName": "Long dependency duration",
+          "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": false,
+          "Name": "longdependencyduration",
+          "SupportsEmailNotifications": true
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/migrationToAlertRulesCompleted')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": false,
+        "ruleDefinitions": {
+          "Description": "A configuration that controls the migration state of Smart Detection to Smart Alerts",
+          "DisplayName": "Migration To Alert Rules Completed",
+          "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+          "IsEnabledByDefault": false,
+          "IsHidden": true,
+          "IsInPreview": true,
+          "Name": "migrationToAlertRulesCompleted",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/migrationToAlertRulesCompleted')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": false,
+        "ruleDefinitions": {
+          "Description": "A configuration that controls the migration state of Smart Detection to Smart Alerts",
+          "DisplayName": "Migration To Alert Rules Completed",
+          "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+          "IsEnabledByDefault": false,
+          "IsHidden": true,
+          "IsInPreview": true,
+          "Name": "migrationToAlertRulesCompleted",
+          "SupportsEmailNotifications": false
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/slowpageloadtime')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "Smart Detection rules notify you of performance anomaly issues.",
+          "DisplayName": "Slow page load time",
+          "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": false,
+          "Name": "slowpageloadtime",
+          "SupportsEmailNotifications": true
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/slowpageloadtime')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "Smart Detection rules notify you of performance anomaly issues.",
+          "DisplayName": "Slow page load time",
+          "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": false,
+          "Name": "slowpageloadtime",
+          "SupportsEmailNotifications": true
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_dev_func_name'))]"
+      ],
+      "location": "westus2",
+      "name": "[concat(parameters('components_higuera_dev_func_name'), '/slowserverresponsetime')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "Smart Detection rules notify you of performance anomaly issues.",
+          "DisplayName": "Slow server response time",
+          "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": false,
+          "Name": "slowserverresponsetime",
+          "SupportsEmailNotifications": true
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2018-05-01-preview",
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components', parameters('components_higuera_func_name'))]"
+      ],
+      "location": "eastus",
+      "name": "[concat(parameters('components_higuera_func_name'), '/slowserverresponsetime')]",
+      "properties": {
+        "customEmails": [],
+        "enabled": true,
+        "ruleDefinitions": {
+          "Description": "Smart Detection rules notify you of performance anomaly issues.",
+          "DisplayName": "Slow server response time",
+          "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+          "IsEnabledByDefault": true,
+          "IsHidden": false,
+          "IsInPreview": false,
+          "Name": "slowserverresponsetime",
+          "SupportsEmailNotifications": true
+        },
+        "sendEmailsToSubscriptionOwners": true
+      },
+      "type": "microsoft.insights/components/ProactiveDetectionConfigs"
+    },
+    {
+      "apiVersion": "2024-12-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_higuera_dev_kv_name'))]"
+      ],
+      "location": "eastus2",
+      "name": "[concat(parameters('vaults_higuera_dev_kv_name'), '/RedisConnectionString')]",
+      "properties": {
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "type": "Microsoft.KeyVault/vaults/secrets"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higueradevst_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higueradevst_name'), '/default')]",
+      "properties": {
+        "cors": {
+          "corsRules": []
+        },
+        "deleteRetentionPolicy": {
+          "allowPermanentDelete": false,
+          "enabled": false
+        }
+      },
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "type": "Microsoft.Storage/storageAccounts/blobServices"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higuerafuncstorage_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higuerafuncstorage_name'), '/default')]",
+      "properties": {
+        "cors": {
+          "corsRules": []
+        },
+        "deleteRetentionPolicy": {
+          "allowPermanentDelete": false,
+          "enabled": false
+        }
+      },
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "type": "Microsoft.Storage/storageAccounts/blobServices"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higueradevst_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higueradevst_name'), '/default')]",
+      "properties": {
+        "cors": {
+          "corsRules": []
+        },
+        "protocolSettings": {
+          "smb": {}
+        },
+        "shareDeleteRetentionPolicy": {
+          "days": 7,
+          "enabled": true
+        }
+      },
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "type": "Microsoft.Storage/storageAccounts/fileServices"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higuerafuncstorage_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higuerafuncstorage_name'), '/default')]",
+      "properties": {
+        "cors": {
+          "corsRules": []
+        },
+        "protocolSettings": {
+          "smb": {}
+        },
+        "shareDeleteRetentionPolicy": {
+          "days": 7,
+          "enabled": true
+        }
+      },
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "type": "Microsoft.Storage/storageAccounts/fileServices"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higueradevst_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higueradevst_name'), '/default')]",
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
+      },
+      "type": "Microsoft.Storage/storageAccounts/queueServices"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higuerafuncstorage_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higuerafuncstorage_name'), '/default')]",
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
+      },
+      "type": "Microsoft.Storage/storageAccounts/queueServices"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higueradevst_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higueradevst_name'), '/default')]",
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
+      },
+      "type": "Microsoft.Storage/storageAccounts/tableServices"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higuerafuncstorage_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higuerafuncstorage_name'), '/default')]",
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
+      },
+      "type": "Microsoft.Storage/storageAccounts/tableServices"
+    },
+    {
+      "apiVersion": "2024-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_higuera_dev_plan_name'))]"
+      ],
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "/subscriptions/6b32cdbb-e9cf-4d8d-8293-8b37d7a7ad9c/resourcegroups/higuera-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/higuera_admin": {}
+        }
+      },
+      "kind": "functionapp",
+      "location": "East US 2",
+      "name": "[parameters('sites_higuera_dev_func_name')]",
+      "properties": {
+        "clientAffinityEnabled": false,
+        "clientCertEnabled": false,
+        "clientCertMode": "Required",
+        "containerSize": 1536,
+        "customDomainVerificationId": "A14A5A540F37E293C0A94D4C9B1E8A16F37C5EA0B6E8223B6C070E1728B9819A",
+        "dailyMemoryTimeQuota": 0,
+        "dnsConfiguration": {},
+        "enabled": true,
+        "endToEndEncryptionEnabled": false,
+        "hostNameSslStates": [
+          {
+            "hostType": "Standard",
+            "name": "[concat(parameters('sites_higuera_dev_func_name'), '.azurewebsites.net')]",
+            "sslState": "Disabled"
+          },
+          {
+            "hostType": "Repository",
+            "name": "[concat(parameters('sites_higuera_dev_func_name'), '.scm.azurewebsites.net')]",
+            "sslState": "Disabled"
+          }
+        ],
+        "hostNamesDisabled": false,
+        "httpsOnly": true,
+        "hyperV": false,
+        "ipMode": "IPv4",
+        "isXenon": false,
+        "keyVaultReferenceIdentity": "SystemAssigned",
+        "redundancyMode": "None",
+        "reserved": false,
+        "scmSiteAlsoStopped": false,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_higuera_dev_plan_name'))]",
+        "siteConfig": {
+          "acrUseManagedIdentityCreds": false,
+          "alwaysOn": false,
+          "functionAppScaleLimit": 200,
+          "http20Enabled": true,
+          "minimumElasticInstanceCount": 1,
+          "numberOfWorkers": 1
+        },
+        "storageAccountRequired": false,
+        "vnetBackupRestoreEnabled": false,
+        "vnetContentShareEnabled": false,
+        "vnetImagePullEnabled": false,
+        "vnetRouteAllEnabled": false
+      },
+      "tags": {
+        "azd-service-name": "functionapp",
+        "environment": "dev",
+        "project": "higuera"
+      },
+      "type": "Microsoft.Web/sites"
+    },
+    {
+      "apiVersion": "2024-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_higuera_dev_func_name'))]"
+      ],
+      "location": "East US 2",
+      "name": "[concat(parameters('sites_higuera_dev_func_name'), '/ftp')]",
+      "properties": {
+        "allow": true
+      },
+      "tags": {
+        "azd-service-name": "functionapp",
+        "environment": "dev",
+        "project": "higuera"
+      },
+      "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies"
+    },
+    {
+      "apiVersion": "2024-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_higuera_dev_func_name'))]"
+      ],
+      "location": "East US 2",
+      "name": "[concat(parameters('sites_higuera_dev_func_name'), '/scm')]",
+      "properties": {
+        "allow": true
+      },
+      "tags": {
+        "azd-service-name": "functionapp",
+        "environment": "dev",
+        "project": "higuera"
+      },
+      "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies"
+    },
+    {
+      "apiVersion": "2024-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_higuera_dev_func_name'))]"
+      ],
+      "location": "East US 2",
+      "name": "[concat(parameters('sites_higuera_dev_func_name'), '/web')]",
+      "properties": {
+        "acrUseManagedIdentityCreds": false,
+        "alwaysOn": false,
+        "autoHealEnabled": false,
+        "azureStorageAccounts": {},
+        "cors": {
+          "allowedOrigins": [
+            "https://icy-rock-0528f900f.6.azurestaticapps.net",
+            "https://higueradashboard.live"
+          ],
+          "supportCredentials": false
+        },
+        "defaultDocuments": [
+          "Default.htm",
+          "Default.html",
+          "Default.asp",
+          "index.htm",
+          "index.html",
+          "iisstart.htm",
+          "default.aspx",
+          "index.php"
+        ],
+        "detailedErrorLoggingEnabled": false,
+        "experiments": {
+          "rampUpRules": []
+        },
+        "ftpsState": "Disabled",
+        "functionAppScaleLimit": 200,
+        "functionsRuntimeScaleMonitoringEnabled": false,
+        "http20Enabled": true,
+        "httpLoggingEnabled": false,
+        "ipSecurityRestrictions": [
+          {
+            "action": "Allow",
+            "description": "Allow all access",
+            "ipAddress": "Any",
+            "name": "Allow all",
+            "priority": 2147483647
+          }
+        ],
+        "loadBalancing": "LeastRequests",
+        "localMySqlEnabled": false,
+        "logsDirectorySizeLimit": 35,
+        "managedPipelineMode": "Integrated",
+        "minTlsVersion": "1.2",
+        "minimumElasticInstanceCount": 1,
+        "netFrameworkVersion": "v4.0",
+        "numberOfWorkers": 1,
+        "preWarmedInstanceCount": 0,
+        "publishingUsername": "$higuera-dev-func",
+        "remoteDebuggingEnabled": false,
+        "requestTracingEnabled": false,
+        "scmIpSecurityRestrictions": [
+          {
+            "action": "Allow",
+            "description": "Allow all access",
+            "ipAddress": "Any",
+            "name": "Allow all",
+            "priority": 2147483647
+          }
+        ],
+        "scmIpSecurityRestrictionsUseMain": false,
+        "scmMinTlsVersion": "1.2",
+        "scmType": "GitHubAction",
+        "use32BitWorkerProcess": true,
+        "virtualApplications": [
+          {
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": false,
+            "virtualPath": "/"
+          }
+        ],
+        "vnetPrivatePortsCount": 0,
+        "vnetRouteAllEnabled": false,
+        "webSocketsEnabled": false,
+        "xManagedServiceIdentityId": 58946
+      },
+      "tags": {
+        "azd-service-name": "functionapp",
+        "environment": "dev",
+        "project": "higuera"
+      },
+      "type": "Microsoft.Web/sites/config"
+    },
+    {
+      "apiVersion": "2024-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_higuera_dev_func_name'))]"
+      ],
+      "location": "East US 2",
+      "name": "[concat(parameters('sites_higuera_dev_func_name'), '/886b2dc848c04e36a5841f71f821d1c0')]",
+      "properties": {
+        "active": true,
+        "author": "N/A",
+        "author_email": "N/A",
+        "deployer": "ZipDeploy",
+        "end_time": "2025-05-06T18:57:31.7302389Z",
+        "message": "Created via a push deployment",
+        "start_time": "2025-05-06T18:57:27.3777466Z",
+        "status": 4
+      },
+      "type": "Microsoft.Web/sites/deployments"
+    },
+    {
+      "apiVersion": "2024-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_higuera_dev_func_name'))]"
+      ],
+      "location": "East US 2",
+      "name": "[concat(parameters('sites_higuera_dev_func_name'), '/', parameters('sites_higuera_dev_func_name'), '.azurewebsites.net')]",
+      "properties": {
+        "hostNameType": "Verified",
+        "siteName": "higuera-dev-func"
+      },
+      "type": "Microsoft.Web/sites/hostNameBindings"
+    },
+    {
+      "apiVersion": "2024-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/staticSites', parameters('staticSites_higuera_dashboard_name'))]"
+      ],
+      "location": "West US 2",
+      "name": "[concat(parameters('staticSites_higuera_dashboard_name'), '/default')]",
+      "properties": {
+        "applicableEnvironmentsMode": "SpecifiedEnvironments"
+      },
+      "type": "Microsoft.Web/staticSites/basicAuth"
+    },
+    {
+      "apiVersion": "2024-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/staticSites', parameters('staticSites_higuera_dashboard_name'))]"
+      ],
+      "location": "West US 2",
+      "name": "[concat(parameters('staticSites_higuera_dashboard_name'), '/higueradashboard.live')]",
+      "properties": {},
+      "type": "Microsoft.Web/staticSites/customDomains"
+    },
+    {
+      "apiVersion": "2024-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/staticSites', parameters('staticSites_higuera_dashboard_name'))]"
+      ],
+      "location": "West US 2",
+      "name": "[concat(parameters('staticSites_higuera_dashboard_name'), '/www.higueradashboard.live')]",
+      "properties": {},
+      "type": "Microsoft.Web/staticSites/customDomains"
+    },
+    {
+      "apiVersion": "2024-04-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/staticSites', parameters('staticSites_higuera_dashboard_name'))]"
+      ],
+      "location": "West US 2",
+      "name": "[concat(parameters('staticSites_higuera_dashboard_name'), '/backend1')]",
+      "properties": {
+        "backendResourceId": "[parameters('sites_app_api_yuhr3xnfhbqzm_externalid')]",
+        "region": "westus2"
+      },
+      "type": "Microsoft.Web/staticSites/linkedBackends"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/echo-api/create-resource')]",
+      "properties": {
+        "description": "A demonstration of a POST call based on the echo backend above. The request body is expected to contain JSON-formatted data (see example below). A policy is used to automatically transform any request sent in JSON directly to XML. In a real-world scenario this could be used to enable modern clients to speak to a legacy backend.",
+        "displayName": "Create resource",
+        "method": "POST",
+        "request": {
+          "headers": [],
+          "queryParameters": [],
+          "representations": [
+            {
+              "contentType": "application/json",
+              "examples": {
+                "default": {
+                  "value": "{\r\n\t\"vehicleType\": \"train\",\r\n\t\"maxSpeed\": 125,\r\n\t\"avgSpeed\": 90,\r\n\t\"speedUnit\": \"mph\"\r\n}"
+                }
+              }
+            }
+          ]
+        },
+        "responses": [
+          {
+            "headers": [],
+            "representations": [],
+            "statusCode": 200
+          }
+        ],
+        "templateParameters": [],
+        "urlTemplate": "/resource"
+      },
+      "type": "Microsoft.ApiManagement/service/apis/operations"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/echo-api/modify-resource')]",
+      "properties": {
+        "description": "A demonstration of a PUT call handled by the same \"echo\" backend as above. You can now specify a request body in addition to headers and it will be returned as well.",
+        "displayName": "Modify Resource",
+        "method": "PUT",
+        "responses": [
+          {
+            "headers": [],
+            "representations": [],
+            "statusCode": 200
+          }
+        ],
+        "templateParameters": [],
+        "urlTemplate": "/resource"
+      },
+      "type": "Microsoft.ApiManagement/service/apis/operations"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/echo-api/remove-resource')]",
+      "properties": {
+        "description": "A demonstration of a DELETE call which traditionally deletes the resource. It is based on the same \"echo\" backend as in all other operations so nothing is actually deleted.",
+        "displayName": "Remove resource",
+        "method": "DELETE",
+        "responses": [
+          {
+            "headers": [],
+            "representations": [],
+            "statusCode": 200
+          }
+        ],
+        "templateParameters": [],
+        "urlTemplate": "/resource"
+      },
+      "type": "Microsoft.ApiManagement/service/apis/operations"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/echo-api/retrieve-header-only')]",
+      "properties": {
+        "description": "The HEAD operation returns only headers. In this demonstration a policy is used to set additional headers when the response is returned and to enable JSONP.",
+        "displayName": "Retrieve header only",
+        "method": "HEAD",
+        "responses": [
+          {
+            "headers": [],
+            "representations": [],
+            "statusCode": 200
+          }
+        ],
+        "templateParameters": [],
+        "urlTemplate": "/resource"
+      },
+      "type": "Microsoft.ApiManagement/service/apis/operations"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/echo-api/retrieve-resource')]",
+      "properties": {
+        "description": "A demonstration of a GET call on a sample resource. It is handled by an \"echo\" backend which returns a response equal to the request (the supplied headers and body are being returned as received).",
+        "displayName": "Retrieve resource",
+        "method": "GET",
+        "request": {
+          "headers": [],
+          "queryParameters": [
+            {
+              "defaultValue": "sample",
+              "description": "A sample parameter that is required and has a default value of \"sample\".",
+              "name": "param1",
+              "required": true,
+              "type": "string",
+              "values": [
+                "sample"
+              ]
+            },
+            {
+              "description": "Another sample parameter, set to not required.",
+              "name": "param2",
+              "type": "number",
+              "values": []
+            }
+          ],
+          "representations": []
+        },
+        "responses": [
+          {
+            "description": "Returned in all cases.",
+            "headers": [],
+            "representations": [],
+            "statusCode": 200
+          }
+        ],
+        "templateParameters": [],
+        "urlTemplate": "/resource"
+      },
+      "type": "Microsoft.ApiManagement/service/apis/operations"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/echo-api/retrieve-resource-cached')]",
+      "properties": {
+        "description": "A demonstration of a GET call with caching enabled on the same \"echo\" backend as above. Cache TTL is set to 1 hour. When you make the first request the headers you supplied will be cached. Subsequent calls will return the same headers as the first time even if you change them in your request.",
+        "displayName": "Retrieve resource (cached)",
+        "method": "GET",
+        "request": {
+          "headers": [],
+          "queryParameters": [
+            {
+              "defaultValue": "sample",
+              "description": "A sample parameter that is required and has a default value of \"sample\".",
+              "name": "param1",
+              "required": true,
+              "type": "string",
+              "values": [
+                "sample"
+              ]
+            },
+            {
+              "description": "Another sample parameter, set to not required.",
+              "name": "param2",
+              "type": "string",
+              "values": []
+            }
+          ],
+          "representations": []
+        },
+        "responses": [
+          {
+            "headers": [],
+            "representations": [],
+            "statusCode": 200
+          }
+        ],
+        "templateParameters": [],
+        "urlTemplate": "/resource-cached"
+      },
+      "type": "Microsoft.ApiManagement/service/apis/operations"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/echo-api/default')]",
+      "properties": {
+        "documents": []
+      },
+      "type": "Microsoft.ApiManagement/service/apis/wikis"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'administrators')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/administrators/1')]",
+      "type": "Microsoft.ApiManagement/service/groups/users"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'developers')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/developers/1')]",
+      "type": "Microsoft.ApiManagement/service/groups/users"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'starter')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/starter/echo-api')]",
+      "type": "Microsoft.ApiManagement/service/products/apis"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'unlimited')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/unlimited/echo-api')]",
+      "type": "Microsoft.ApiManagement/service/products/apis"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'starter')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/starter/administrators')]",
+      "type": "Microsoft.ApiManagement/service/products/groups"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'unlimited')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/unlimited/administrators')]",
+      "type": "Microsoft.ApiManagement/service/products/groups"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'starter')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/starter/developers')]",
+      "type": "Microsoft.ApiManagement/service/products/groups"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'unlimited')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/unlimited/developers')]",
+      "type": "Microsoft.ApiManagement/service/products/groups"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'starter')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/starter/guests')]",
+      "type": "Microsoft.ApiManagement/service/products/groups"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'unlimited')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/unlimited/guests')]",
+      "type": "Microsoft.ApiManagement/service/products/groups"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'starter')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/starter/policy')]",
+      "properties": {
+        "format": "xml",
+        "value": "<!--\r\n            IMPORTANT:\r\n            - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.\r\n            - Only the <forward-request> policy element can appear within the <backend> section element.\r\n            - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.\r\n            - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.\r\n            - To add a policy position the cursor at the desired insertion point and click on the round button associated with the policy.\r\n            - To remove a policy, delete the corresponding policy statement from the policy document.\r\n            - Position the <base> element within a section element to inherit all policies from the corresponding section element in the enclosing scope.\r\n            - Remove the <base> element to prevent inheriting policies from the corresponding section element in the enclosing scope.\r\n            - Policies are applied in the order of their appearance, from the top down.\r\n        -->\r\n<policies>\r\n  <inbound>\r\n    <rate-limit calls=\"5\" renewal-period=\"60\" />\r\n    <quota calls=\"100\" renewal-period=\"604800\" />\r\n    <base />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n  </outbound>\r\n</policies>"
+      },
+      "type": "Microsoft.ApiManagement/service/products/policies"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'starter')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/starter/default')]",
+      "properties": {
+        "documents": []
+      },
+      "type": "Microsoft.ApiManagement/service/products/wikis"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'unlimited')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/unlimited/default')]",
+      "properties": {
+        "documents": []
+      },
+      "type": "Microsoft.ApiManagement/service/products/wikis"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_higueradevst_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higueradevst_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higueradevst_name'), '/default/$web')]",
+      "properties": {
+        "defaultEncryptionScope": "$account-encryption-key",
+        "denyEncryptionScopeOverride": false,
+        "immutableStorageWithVersioning": {
+          "enabled": false
+        },
+        "publicAccess": "None"
+      },
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_higueradevst_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higueradevst_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higueradevst_name'), '/default/azure-webjobs-hosts')]",
+      "properties": {
+        "defaultEncryptionScope": "$account-encryption-key",
+        "denyEncryptionScopeOverride": false,
+        "immutableStorageWithVersioning": {
+          "enabled": false
+        },
+        "publicAccess": "None"
+      },
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_higuerafuncstorage_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higuerafuncstorage_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higuerafuncstorage_name'), '/default/azure-webjobs-hosts')]",
+      "properties": {
+        "defaultEncryptionScope": "$account-encryption-key",
+        "denyEncryptionScopeOverride": false,
+        "immutableStorageWithVersioning": {
+          "enabled": false
+        },
+        "publicAccess": "None"
+      },
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_higueradevst_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higueradevst_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higueradevst_name'), '/default/azure-webjobs-secrets')]",
+      "properties": {
+        "defaultEncryptionScope": "$account-encryption-key",
+        "denyEncryptionScopeOverride": false,
+        "immutableStorageWithVersioning": {
+          "enabled": false
+        },
+        "publicAccess": "None"
+      },
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_higuerafuncstorage_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higuerafuncstorage_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higuerafuncstorage_name'), '/default/azure-webjobs-secrets')]",
+      "properties": {
+        "defaultEncryptionScope": "$account-encryption-key",
+        "denyEncryptionScopeOverride": false,
+        "immutableStorageWithVersioning": {
+          "enabled": false
+        },
+        "publicAccess": "None"
+      },
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_higuerafuncstorage_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higuerafuncstorage_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higuerafuncstorage_name'), '/default/function-releases')]",
+      "properties": {
+        "defaultEncryptionScope": "$account-encryption-key",
+        "denyEncryptionScopeOverride": false,
+        "immutableStorageWithVersioning": {
+          "enabled": false
+        },
+        "publicAccess": "None"
+      },
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_higuerafuncstorage_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higuerafuncstorage_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higuerafuncstorage_name'), '/default/scm-releases')]",
+      "properties": {
+        "defaultEncryptionScope": "$account-encryption-key",
+        "denyEncryptionScopeOverride": false,
+        "immutableStorageWithVersioning": {
+          "enabled": false
+        },
+        "publicAccess": "None"
+      },
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_higueradevst_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higueradevst_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higueradevst_name'), '/default/higuera-dev-func-63eb710b')]",
+      "properties": {
+        "accessTier": "TransactionOptimized",
+        "enabledProtocols": "SMB",
+        "shareQuota": 102400
+      },
+      "type": "Microsoft.Storage/storageAccounts/fileServices/shares"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_higuerafuncstorage_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higuerafuncstorage_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higuerafuncstorage_name'), '/default/higuera-func86423bb0297d')]",
+      "properties": {
+        "accessTier": "TransactionOptimized",
+        "enabledProtocols": "SMB",
+        "shareQuota": 102400
+      },
+      "type": "Microsoft.Storage/storageAccounts/fileServices/shares"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_higuerafuncstorage_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higuerafuncstorage_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higuerafuncstorage_name'), '/default/higuera-funce7107eaa6fe6')]",
+      "properties": {
+        "accessTier": "TransactionOptimized",
+        "enabledProtocols": "SMB",
+        "shareQuota": 102400
+      },
+      "type": "Microsoft.Storage/storageAccounts/fileServices/shares"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageAccounts_higuerafuncstorage_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higuerafuncstorage_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higuerafuncstorage_name'), '/default/AzureFunctionsDiagnosticEvents202504')]",
+      "properties": {},
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables"
+    },
+    {
+      "apiVersion": "2024-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageAccounts_higueradevst_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_higueradevst_name'))]"
+      ],
+      "name": "[concat(parameters('storageAccounts_higueradevst_name'), '/default/AzureFunctionsDiagnosticEvents202505')]",
+      "properties": {},
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('service_Higuera_name'), 'echo-api', 'create-resource')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/echo-api/create-resource/policy')]",
+      "properties": {
+        "format": "xml",
+        "value": "<policies>\r\n  <inbound>\r\n    <base />\r\n    <json-to-xml apply=\"always\" consider-accept-header=\"false\" />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n  </outbound>\r\n</policies>"
+      },
+      "type": "Microsoft.ApiManagement/service/apis/operations/policies"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('service_Higuera_name'), 'echo-api', 'retrieve-header-only')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/echo-api/retrieve-header-only/policy')]",
+      "properties": {
+        "format": "xml",
+        "value": "<policies>\r\n  <inbound>\r\n    <base />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n    <set-header name=\"X-My-Sample\" exists-action=\"override\">\r\n      <value>This is a sample</value>\r\n      <!-- for multiple headers with the same name add additional value elements -->\r\n    </set-header>\r\n    <jsonp callback-parameter-name=\"ProcessResponse\" />\r\n  </outbound>\r\n</policies>"
+      },
+      "type": "Microsoft.ApiManagement/service/apis/operations/policies"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('service_Higuera_name'), 'echo-api', 'retrieve-resource-cached')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/echo-api/retrieve-resource-cached/policy')]",
+      "properties": {
+        "format": "xml",
+        "value": "<policies>\r\n  <inbound>\r\n    <base />\r\n    <cache-lookup vary-by-developer=\"false\" vary-by-developer-groups=\"false\">\r\n      <vary-by-header>Accept</vary-by-header>\r\n      <vary-by-header>Accept-Charset</vary-by-header>\r\n    </cache-lookup>\r\n    <rewrite-uri template=\"/resource\" />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n    <cache-store duration=\"3600\" />\r\n  </outbound>\r\n</policies>"
+      },
+      "type": "Microsoft.ApiManagement/service/apis/operations/policies"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'starter')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]",
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/starter/4BEEB2EA-1F9B-46BC-B23A-C665E60E432C')]",
+      "properties": {
+        "apiId": "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]"
+      },
+      "type": "Microsoft.ApiManagement/service/products/apiLinks"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'unlimited')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]",
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/unlimited/E4F12CA7-7389-4221-97A7-8162C4F0E5A0')]",
+      "properties": {
+        "apiId": "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_Higuera_name'), 'echo-api')]"
+      },
+      "type": "Microsoft.ApiManagement/service/products/apiLinks"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'starter')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]",
+        "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'developers')]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/starter/3513CA24-C5C0-4A2D-9159-8538C937A13C')]",
+      "properties": {
+        "groupId": "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'developers')]"
+      },
+      "type": "Microsoft.ApiManagement/service/products/groupLinks"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'starter')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]",
+        "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'guests')]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/starter/524D32B4-1125-44EE-B35C-EA5355A18547')]",
+      "properties": {
+        "groupId": "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'guests')]"
+      },
+      "type": "Microsoft.ApiManagement/service/products/groupLinks"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'unlimited')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]",
+        "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'administrators')]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/unlimited/79FBAF15-F0B0-4213-884B-7ABDE437ACE1')]",
+      "properties": {
+        "groupId": "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'administrators')]"
+      },
+      "type": "Microsoft.ApiManagement/service/products/groupLinks"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'unlimited')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]",
+        "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'developers')]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/unlimited/ECFD6C92-AB29-456F-8FC8-2074D309998F')]",
+      "properties": {
+        "groupId": "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'developers')]"
+      },
+      "type": "Microsoft.ApiManagement/service/products/groupLinks"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'starter')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]",
+        "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'administrators')]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/starter/F32FE09D-2DB4-45A7-B6C6-2C85172715C5')]",
+      "properties": {
+        "groupId": "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'administrators')]"
+      },
+      "type": "Microsoft.ApiManagement/service/products/groupLinks"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'unlimited')]",
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]",
+        "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'guests')]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/unlimited/F5D99FB5-198C-4981-8225-67BA1EFCA577')]",
+      "properties": {
+        "groupId": "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_Higuera_name'), 'guests')]"
+      },
+      "type": "Microsoft.ApiManagement/service/products/groupLinks"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]",
+        "[resourceId('Microsoft.ApiManagement/service/users', parameters('service_Higuera_name'), '1')]",
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'starter')]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/681d2767ea97b30073070001')]",
+      "properties": {
+        "allowTracing": false,
+        "displayName": "[parameters('subscriptions_681d2767ea97b30073070001_displayName')]",
+        "ownerId": "[resourceId('Microsoft.ApiManagement/service/users', parameters('service_Higuera_name'), '1')]",
+        "scope": "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'starter')]",
+        "state": "active"
+      },
+      "type": "Microsoft.ApiManagement/service/subscriptions"
+    },
+    {
+      "apiVersion": "2024-06-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service', parameters('service_Higuera_name'))]",
+        "[resourceId('Microsoft.ApiManagement/service/users', parameters('service_Higuera_name'), '1')]",
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'unlimited')]"
+      ],
+      "name": "[concat(parameters('service_Higuera_name'), '/681d2768ea97b30073070002')]",
+      "properties": {
+        "allowTracing": false,
+        "displayName": "[parameters('subscriptions_681d2768ea97b30073070002_displayName')]",
+        "ownerId": "[resourceId('Microsoft.ApiManagement/service/users', parameters('service_Higuera_name'), '1')]",
+        "scope": "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_Higuera_name'), 'unlimited')]",
+        "state": "active"
+      },
+      "type": "Microsoft.ApiManagement/service/subscriptions"
+    }
+  ],
+  "variables": {}
+}
