@@ -59,10 +59,10 @@ jobs:
           npm install
 
       - name: Build Next.js app
-        run: |
-          npm run build
-        env:
-          AZURE_FUNCTION_URL: https://${{ secrets.AZURE_FUNCTION_APP_NAME }}.azurewebsites.net
+        run: npm run build
+
+      - name: Export Next.js site to static files
+        run: npm run export
 
       - name: Deploy Static Web App
         id: deploy
@@ -73,7 +73,8 @@ jobs:
           action: "upload"
           app_location: "/"
           api_location: ""
-          output_location: ".next"
+          output_location: "out"
+          skip_app_build: true  # skip Oryx build, using pre-exported static files
           production_branch: "main"
 
   close_pull_request_job:
