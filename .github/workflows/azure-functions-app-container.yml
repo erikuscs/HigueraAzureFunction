@@ -45,7 +45,7 @@ jobs:
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_RBAC_CREDENTIALS }}
+        creds: ${{ secrets.AZURE_RBAC_CREDENTIALS }}  # JSON with clientId, clientSecret, tenantId, subscriptionId
 
     - name: 'Docker Login'
       uses: azure/docker-login@v1
