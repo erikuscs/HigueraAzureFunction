@@ -224,10 +224,11 @@
 @utility container {
   margin-inline: auto;
   padding-inline: 2rem;
-  @media (width >= --theme(--breakpoint-sm)) {
+  /* use Tailwind's @screen directive for responsive breakpoints */
+  @media (min-width: 640px) {  /* Tailwind 'sm' breakpoint */
     max-width: none;
   }
-  @media (width >= 1400px) {
+  @media (min-width: 1400px) {
     max-width: 1400px;
   }
 }
@@ -383,13 +384,13 @@
   --tw-backdrop-blur: blur(12px);
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
     var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
-    var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+    var(--tw-backdrop-hue-rotate) var (--tw-backdrop-invert)
     var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
     var(--tw-backdrop-sepia);
   backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
     var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
     var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
-    var(--tw-backdrop-opacity) var (--tw-backdrop-saturate)
+    var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
     var(--tw-backdrop-sepia);
   --tw-content: "";
   content: var(--tw-content);
