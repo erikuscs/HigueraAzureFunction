@@ -16,6 +16,12 @@ module.exports = {
       },
     },
     extend: {
+      // Map CSS variables to Tailwind colors for utility classes
+      colors: {
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        foreground: 'hsl(var(--foreground))',
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },

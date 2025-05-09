@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST='{"components/HoursTrackingChart.tsx -> react-apexcharts":{"id":21352,"files":["static/chunks/fa3de7d5.b53482f6e1636253.js","static/chunks/352.78b3aceb838eb09c.js"]}}';

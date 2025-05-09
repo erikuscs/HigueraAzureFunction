@@ -1,4 +1,5 @@
-// Next-Intl plugin wrapper removed; i18n routing is handled in middleware and pages
+// Integrate next-intl plugin for App Router
+const { withNextIntl } = require('next-intl/plugin')();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -71,4 +72,5 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig;
+// Wrap Next.js config with next-intl plugin
+module.exports = withNextIntl(nextConfig);
