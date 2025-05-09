@@ -1,1 +1,1 @@
-az identity create --name higuera_admin --resource-group higuera_func --location eastus
+az identity create --name higuera_admin --resource-group higueraazurefunction --location eastus
