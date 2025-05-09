@@ -1,5 +1,5 @@
 // Integrate next-intl plugin for App Router
-const { withNextIntl } = require('next-intl/plugin')();
+const withNextIntl = require('next-intl/plugin')();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
