@@ -74,7 +74,8 @@ jobs:
           app_location: "/"
           api_location: ""
           output_location: "out"
-          skip_app_build: true  # skip Oryx build, using pre-exported static files
+          skip_app_build: true   # skip Oryx build, using pre-exported static files
+          skip_api_build: true   # skip Oryx API detection/build
           production_branch: "main"
 
   close_pull_request_job:
@@ -91,5 +92,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           app_location: "/"
           api_location: ""
-          output_location: ".next"
+          output_location: "out"
+          skip_app_build: true
+          skip_api_build: true
           production_branch: "main"
